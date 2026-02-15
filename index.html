@@ -24,13 +24,13 @@
             justify-content: center; 
             min-height: 100vh; 
             margin: 0; 
-            overflow: hidden; /* 기본값 유지 */
+            overflow: hidden; 
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* 버전 표기 스타일 */
+        /* 버전 표기 스타일 - 폰트 크기 2배 확대 유지 */
         #version-tag {
             position: fixed;
             bottom: 1.5vh;
@@ -48,7 +48,7 @@
 
         .title-wrapper { position: relative; margin-bottom: 3vh; z-index: 300; display: flex; justify-content: center; align-items: center; }
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
-        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
+        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2 vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
         
         @keyframes neonShift { 0% { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 2vh var(--cyan); } 100% { color: var(--purple); border-color: var(--purple); box-shadow: 0 0 2vh var(--purple); } }
         @keyframes neonShiftBg { 0% { background-color: var(--cyan); box-shadow: 0 0 1.5vh var(--cyan); } 100% { background-color: var(--purple); box-shadow: 0 0 1.5vh var(--purple); } }
@@ -197,6 +197,7 @@
             animation: floatingCat 4s infinite ease-in-out;
         }
         
+        /* 고양이 둥실둥실 애니메이션 */
         @keyframes floatingCat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-3vh) rotate(2deg); }
@@ -237,66 +238,74 @@
         }
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
-
-        /* --- 모바일 세로 배치 및 스크롤 강제 최적화 (본문 코드 수정) --- */
+/* --- 모바일 환경 최적화 코드 (기존 로직 변경 없음) --- */
         @media screen and (max-width: 768px) {
             body {
-                overflow-y: auto !important; /* 모바일에서만 스크롤 허용 */
-                justify-content: flex-start !important;
-                padding-top: 5vh;
+                overflow: auto; /* 모바일에서 세로 스크롤 허용 */
+                justify-content: flex-start;
+                padding-top: 2vh;
             }
 
             .game-container {
-                flex-direction: column !important; /* 무조건 세로 배치 */
-                height: auto !important; /* 고정 높이 75vh 해제 */
-                gap: 5vh !important;
-                width: 95% !important;
-                padding-bottom: 15vh; /* 하단 여백 확보 */
+                flex-direction: column; /* 가로 배치를 세로 배치로 변경 */
+                height: auto;
+                gap: 2vh;
+                padding-bottom: 5vh;
             }
 
-            #game-box, #info-panel, #setup {
-                width: 90vw !important; /* 너비를 화면에 맞춤 */
-                height: auto !important; /* 고정 높이 해제 */
-                min-height: 70vh !important; /* 최소 높이 보장 */
+            #game-box, #info-panel {
+                width: 90vw; /* 화면 너비에 맞춤 */
+                height: 70vh; /* 각 판넬의 높이 고정 */
                 flex-shrink: 0;
-                margin: 0 auto;
             }
 
-            #setup {
-                height: auto !important;
-                min-height: 75vh !important;
+            /* 우측 상단 정보(확률/턴카운트)가 잘 보이도록 영역 확보 */
+            .chance-area {
+                height: 14vh;
+                margin-bottom: 1vh;
             }
 
-            .setup-cat, .setup-btn, .tutorial-btn, .new-keyhole {
-                width: 80vw !important;
+            /* 퀀텀 클라우드 드래그(스크롤) 가능하도록 설정 */
+            #candidates-box {
+                flex-grow: 1;
+                overflow: hidden; /* 박스 자체는 고정 */
+            }
+
+            #cand-list {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.8vh;
+                overflow-y: auto; /* 내부에서 드래그(스크롤) 가능 */
+                max-height: 45vh; /* 드래그 영역 확보 */
+                -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+                scrollbar-width: thin; /* 스크롤바 표시 (필요시) */
+            }
+
+            /* 모바일에서 버튼 클릭이 쉽도록 크기 미세 조정 */
+            .keypad button {
+                padding: 2.2vh 0;
             }
 
             .header-title {
-                font-size: 3.5vh !important;
-                letter-spacing: 0.5vh !important;
-                padding: 1vh 2vh !important;
+                font-size: 3.5vh; /* 제목 크기 축소 */
+                letter-spacing: 0.5vh;
             }
 
-            .panel-center {
-                width: 85vw !important;
-                padding: 4vh 2vh !important;
+            #setup {
+                width: 90vw;
+                height: auto;
+                padding: 3vh;
             }
             
-            #obs-num {
-                width: 70vw !important;
+            .setup-cat, .setup-btn, .tutorial-btn {
+                width: 70vw;
             }
-
-            #credit-overlay {
-                flex-direction: column !important;
-            }
-            .side-cat-box { height: 20% !important; }
-            #credit-container { width: 100% !important; height: 60% !important; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.0 version</div>
+<div id="version-tag">Test.Mobile</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -814,7 +823,7 @@
             statusEl.style.color = "var(--red)";
         } else {
             entBtn.disabled = false;
-            statusEl.innerText = "고양이 위치 관측 중...";
+            statusEl.innerText = "양자고양이 좌표 측정 중...";
             statusEl.style.color = "var(--cyan)";
         }
     }
@@ -923,7 +932,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.0 version</div>
+            <div id="version-tag">Test.Mobile</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
@@ -946,7 +955,7 @@
                     <div id="tut-esc-guide" class="esc-guide" style="display:none;"></div>
                 </div>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50; padding: 5vh 0;">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50;">
                 <img src="${mediaUrl}" style="border:0.4vh solid ${color}; border-radius:4vh; box-shadow: 0 0 3vh ${color}; width: 45vh; height: 45vh; object-fit: cover; margin-bottom: 2vh;">
                 <h1 style="font-size:7vh; color:${color}; margin: 1vh 0; text-shadow:0 0 2vh ${color};">${type}</h1>
                 <h2 style="font-size:4vh; color:#fff; margin-bottom: 1vh;">${result}</h2>
@@ -1041,7 +1050,7 @@
                 const intensity = (turnCount) * 1.5; 
                 const tMoveX = (Math.random()-0.5) * intensity;
                 const tMoveY = (Math.random()-0.5) * intensity;
-                turnCounter.style.transform = `translate(${tMoveX}px, ${tMoveY}px)`;
+                turnCounter.style.transform = `translate(${tMoveX}vh, ${tMoveY}vh)`;
             } else { turnCounter.style.transform = `translate(0px, 0px)`; }
         }
     }, 2000);
