@@ -30,7 +30,6 @@
             -webkit-user-select: none;
         }
 
-        /* 버전 표기 스타일 - 폰트 크기 2배 확대 유지 */
         #version-tag {
             position: fixed;
             bottom: 1.5vh;
@@ -197,7 +196,6 @@
             animation: floatingCat 4s infinite ease-in-out;
         }
         
-        /* 고양이 둥실둥실 애니메이션 */
         @keyframes floatingCat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-3vh) rotate(2deg); }
@@ -238,74 +236,66 @@
         }
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
-/* --- 모바일 환경 최적화 코드 (기존 로직 변경 없음) --- */
+
         @media screen and (max-width: 768px) {
             body {
-                overflow: auto; /* 모바일에서 세로 스크롤 허용 */
+                overflow-y: auto;
                 justify-content: flex-start;
-                padding-top: 2vh;
+                padding: 2vh 0;
             }
 
             .game-container {
-                flex-direction: column; /* 가로 배치를 세로 배치로 변경 */
+                flex-direction: column;
                 height: auto;
                 gap: 2vh;
-                padding-bottom: 5vh;
+                width: 100%;
+                flex-wrap: wrap;
             }
 
             #game-box, #info-panel {
-                width: 90vw; /* 화면 너비에 맞춤 */
-                height: 70vh; /* 각 판넬의 높이 고정 */
+                width: 90vw;
+                height: auto;
+                min-height: 70vh;
                 flex-shrink: 0;
             }
 
-            /* 우측 상단 정보(확률/턴카운트)가 잘 보이도록 영역 확보 */
             .chance-area {
-                height: 14vh;
-                margin-bottom: 1vh;
-            }
-
-            /* 퀀텀 클라우드 드래그(스크롤) 가능하도록 설정 */
-            #candidates-box {
-                flex-grow: 1;
-                overflow: hidden; /* 박스 자체는 고정 */
+                height: auto;
+                min-height: 14vh;
+                margin-bottom: 2vh;
             }
 
             #cand-list {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0.8vh;
-                overflow-y: auto; /* 내부에서 드래그(스크롤) 가능 */
-                max-height: 45vh; /* 드래그 영역 확보 */
-                -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
-                scrollbar-width: thin; /* 스크롤바 표시 (필요시) */
-            }
-
-            /* 모바일에서 버튼 클릭이 쉽도록 크기 미세 조정 */
-            .keypad button {
-                padding: 2.2vh 0;
+                max-height: 35vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .header-title {
-                font-size: 3.5vh; /* 제목 크기 축소 */
+                font-size: 3.5vh;
                 letter-spacing: 0.5vh;
+                width: 80%;
             }
 
             #setup {
                 width: 90vw;
                 height: auto;
-                padding: 3vh;
+                padding: 4vh 2vh;
             }
             
             .setup-cat, .setup-btn, .tutorial-btn {
-                width: 70vw;
+                width: 80vw;
+            }
+            
+            .new-keyhole {
+                width: 60vw;
             }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">Test.Mobile</div>
+<div id="version-tag">1.0 version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -932,7 +922,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">Test.Mobile</div>
+            <div id="version-tag">1.0 version</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
