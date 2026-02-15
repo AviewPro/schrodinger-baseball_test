@@ -124,10 +124,9 @@
         .prob-cat { width: 100%; height: 100%; border-radius: 2.5vh; border: 0.2vh solid var(--purple); object-fit: cover; box-sizing: border-box; z-index: 1; }
         #turn-counter { position: absolute; font-weight: 900; font-size: 8vh; z-index: 20; pointer-events: none; transition: transform 2s ease-in-out, color 0.5s; will-change: transform; }
 
-        #candidates-box { height: 44vh; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        #candidates-box { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .cand-title { font-size: 1.8vh; color:#fff; margin-bottom: 1.5vh; font-weight:bold; text-align: center; padding: 1vh 0; border-top: 0.1vh solid #333; border-bottom: 0.1vh solid #333; }
-        #cand-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1vh; overflow-y: auto; font-family: 'Consolas', monospace; font-size: 1.8vh; color: #fff; flex-grow: 1; -ms-overflow-style: none; scrollbar-width: none; }
-        #cand-list::-webkit-scrollbar { display: none; }
+        #cand-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1vh; overflow-y: hidden; font-family: 'Consolas', monospace; font-size: 1.8vh; color: #fff; flex-grow: 1; align-content: start; }
         .cand-item { padding: 0.4vh 0.2vh; height: 3vh; line-height: 3vh; text-align: center; background: rgba(255,255,255,0.07); border-radius: 0.6vh; transition: none; will-change: transform; }
 
         .input-view { 
@@ -137,7 +136,7 @@
         }
 
         .keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1vh; flex-grow: 1; }
-        .key-btn, #zero-btn, #obs-btn, #clr-btn, #ent-btn { height: 100%; min-height: 7vh; }
+        .key-btn, #zero-btn, #obs-btn, #clr-btn, #ent-btn { height: 100%; min-height: 5vh; } /* 세로폭 약 30% 감소 (7vh -> 5vh) */
         button { background: #222; border: none; color: #fff; padding: 1vh 0; border-radius: 1vh; cursor: pointer; font-size: 2.4vh; box-shadow: 0.2vh 0.2vh 0.5vh rgba(0,0,0,0.5); transition: background 0.2s, transform 0.1s, filter 0.2s; }
         button:hover:not(:disabled) { filter: brightness(1.3); transform: translateY(-0.2vh); }
         button:active:not(:disabled), button.active { transform: translateY(0.2vh); filter: brightness(0.8); }
@@ -308,7 +307,7 @@
             <img src="Neon cat.gif" class="setup-cat">
         </div>
         <button onclick="startTutorial()" class="tutorial-btn">How to Play</button>
-        <button onclick="startGame()" class="setup-btn" style="background-color: var(--green); box-shadow: 0 0 1.5vh var(--green); animation: none;">Start Single Mode</button>
+        <button onclick="startGame()" class="setup-btn">Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
     </div>
 
@@ -777,7 +776,7 @@
         }).join('');
         document.getElementById('log-window').scrollTop = document.getElementById('log-window').scrollHeight;
 
-        const slice = [...aiCandidates].sort(() => 0.5 - Math.random()).slice(0, 52);
+        const slice = [...aiCandidates].sort(() => 0.5 - Math.random()).slice(0, 100); /* 더 많은 숫자 노출 */
         const pixelateStrength = prob >= 25 ? 0 : (25 - prob) / 35; 
         document.getElementById('cand-list').innerHTML = slice.map(c => `<div class="cand-item" style="filter: blur(${pixelateStrength}vh) contrast(180%);">${c}</div>`).join('');
 
@@ -1013,10 +1012,10 @@
         const turnCounter = document.getElementById('turn-counter');
         if(turnCounter) {
             if (turnCount > 0) {
-                const intensity = (turnCount) * 15; 
-                const tMoveX = (Math.random()-0.5) * (intensity/100);
-                const tMoveY = (Math.random()-0.5) * (intensity/100);
-                turnCounter.style.transform = `translate(${tMoveX}vh, ${tMoveY}vh)`;
+                const intensity = 15; /* 계수 고정 15 반영 */
+                const tMoveX = (Math.random()-0.5) * intensity;
+                const tMoveY = (Math.random()-0.5) * intensity;
+                turnCounter.style.transform = `translate(${tMoveX}px, ${tMoveY}px)`;
             } else { turnCounter.style.transform = `translate(0px, 0px)`; }
         }
     }, 2000);
