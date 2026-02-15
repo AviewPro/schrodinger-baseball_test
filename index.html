@@ -10,11 +10,11 @@
             --unit: 1vh; 
         }
         
+        /* 전체 페이지 스크롤 허용 (게임 화면이 길어질 때 대비) */
         html, body {
             min-height: 100%;
             overflow-x: hidden;
-            /* 기본적으로 세로 스크롤 허용 */
-            overflow-y: auto;
+            overflow-y: auto; 
         }
 
         body { 
@@ -63,7 +63,17 @@
             100% { filter: drop-shadow(0 0 1.5vh var(--purple)) drop-shadow(0 0 3vh var(--purple)); } 
         }
 
-        .game-container { display: flex; flex-wrap: nowrap; gap: 3vh; align-items: flex-start; justify-content: center; width: 95%; height: 75vh; }
+        /* 게임 영역 컨테이너: 높이를 auto로 변경하여 내용물에 따라 늘어나게 수정 */
+        .game-container { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            gap: 3vh; 
+            align-items: flex-start; 
+            justify-content: center; 
+            width: 95%; 
+            height: auto; 
+            min-height: 75vh;
+        }
         
         #setup { width: 50vh; height: 72vh; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
@@ -80,6 +90,7 @@
 
         .new-keyhole { width: 35vh; height: auto; margin-top: 1.5vh; animation: keyholeNeonShift 10s infinite alternate linear; }
 
+        /* 게임 패널들 */
         #game-box, #info-panel { width: 50vh; height: 75vh; padding: 2.5vh; border-radius: 2.5vh; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; }
         #game-box { background: rgba(17, 17, 17, 0.9); border: 0.1vh solid #333; position: relative; display: none; }
         #info-panel { background: rgba(10, 10, 15, 0.9); border: 0.1vh solid #333; display: none; position: relative; }
@@ -243,37 +254,32 @@
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
 
-        /* --- 모바일 환경 최적화 --- */
+        /* --- 모바일 환경에서의 게임 화면 스크롤 범위 확장 --- */
         @media screen and (max-width: 768px) {
             body { 
-                justify-content: flex-start; 
-                padding: 3vh 0; 
+                justify-content: flex-start; /* 상단부터 정렬 */
+                padding-top: 5vh;
                 height: auto; 
             }
             .game-container { 
-                flex-direction: column !important; /* 무조건 세로 배치 */
+                flex-direction: column !important; /* 세로 나열 */
                 height: auto !important; /* 높이 제한 해제 */
                 width: 90%; 
-                gap: 5vh; 
-                padding-bottom: 20vh; /* 아래쪽 여유 공간 추가 */
-                overflow: visible;
+                gap: 3vh; 
+                padding-bottom: 10vh; /* 하단 여유 공간 */
+                overflow: visible !important;
             }
             #game-box, #info-panel { 
-                width: 100%; 
-                height: 75vh; 
+                width: 100% !important; 
+                height: 75vh !important; /* 각 패널의 기본 높이 유지 */
                 flex-shrink: 0; 
-                display: none; /* 게임 시작 전에는 안 보임 */
             }
-            /* 게임이 시작되어 'flex'가 되었을 때의 설정 */
-            #game-box[style*="display: flex"], 
-            #info-panel[style*="display: flex"] {
-                display: flex !important;
-            }
-            
+            /* 게임 박스와 인포 패널이 모두 보일 때 스크롤이 자연스럽게 발생함 */
+
             #setup { 
                 width: 100%; 
-                height: 72vh; /* 메인 화면은 기존 비율 유지 */
-                padding: 5vh 2vh; 
+                height: 72vh; /* 메인 화면은 기존 스타일 유지 */
+                margin-bottom: 5vh;
             }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { 
                 width: 80vw; 
@@ -282,21 +288,12 @@
                 font-size: 4vh; 
                 letter-spacing: 0.5vh; 
             }
-            #version-tag {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                margin-top: 5vh;
-                text-align: center;
-                width: 100%;
-                font-size: 2vh;
-            }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">v 1.0tt</div>
+<div id="version-tag">1.0 version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -923,7 +920,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.0 version</div>
+            <div id="version-tag">v.ttt</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
