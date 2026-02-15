@@ -64,16 +64,15 @@
 
         .game-container { 
             display: flex; 
-            flex-wrap: wrap; 
-            gap: 3vh; 
-            align-items: flex-start; 
+            flex-direction: column;
+            align-items: center;
             justify-content: center; 
             width: 95%; 
             height: auto; 
             padding-bottom: 2vh; 
         }
         
-        #setup { width: 50vh; height: auto; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2vh; }
+        #setup { width: 50vh; height: auto; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1vh; }
         
         .setup-box-container { position: relative; width: 35vh; margin-bottom: 2vh; }
         .setup-cat { width: 35vh; height: 35vh; border-radius: 4vh; border: 0.4vh solid var(--green); object-fit: cover; animation: neonShift 10s infinite alternate linear; display: block; }
@@ -163,7 +162,7 @@
             box-shadow: 0 0 10vh rgba(0, 0, 0, 1);
         }
 
-        #setup-footer { margin-top: 1vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; flex-shrink: 0; }
+        #setup-footer { margin-top: 0.5vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; flex-shrink: 0; }
 
         #tutorial-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -295,7 +294,7 @@
     <div class="header-title">SCHRÖDINGER BASEBALL</div>
 </div>
 
-<div class="game-container" style="display: flex; flex-direction: column; align-items: center;">
+<div class="game-container">
     <div id="setup">
         <div class="setup-box-container">
             <img src="Neon cat.gif" class="setup-cat">
@@ -394,7 +393,7 @@
             { title: "성공 시 참고팁 (1/5)", desc: "눈치를 못채셨을 수도 있지만 이 게임은 관측에 성공을 하든 실패를 하든 \nQuantum Collapse 엔딩이 나오죠.\n그렇게 한 것은 성공도 실패도 이 게임의 목표가 아니기 때문입니다." },
             { title: "성공 시 참고팁 (2/5)", desc: "단순히 성공을 하는거 자체는 너무 난이도가 낮으니까요. \n<b style='color:var(--red);'>이 게임은 정확히 6회까지 100%로 양자고양이의 좌표를 특정하고 \n7회차 측정까지 진행해서 양자고양이를 잡는 게임입니다.</b>" },
             { title: "성공 시 참고팁 (3/5)", desc: "이 게임에서 일반 숫자야구의 팁은 큰 도움이 안 될수도 있습니다. \n양자고양이는 계속해서 최대한 안전해보이는 좌표로 도망칩니다. \n정확히는 가능한 후보숫자가 가장 많은 볼카운트 대답한다는 의미죠." },
-            { title: "성공 시 참고팁 (4/5)", desc: "고정된 알고리즘이기 때문에 똑같은 질문을 100번 하면 100번 똑같이 답합니다. \n일정한 빌드를 만들어서 가장 높은 확률을 따라가면 최적화되는 구조입니다. \n숫자를 교차로 배치해서 계속해서 숨을곳을 좁히세요." },
+            { title: "성공 시 참고팁 (4/5)", desc: "고정된 알고리즘이기 때문에 똑같은 질문을 100번 하면 100번 똑같이 답합니다. \n일정한 빌드를 만들어서 가장 높은 확률을 따라가면 최적화되는 구조입니다. \n측정용 숫자를 교차로 배치해서 계속해서 숨을곳을 좁히세요." },
             { title: "성공 시 참고팁 (5/5)", desc: "어차피 깨봤자 개발자의 허접한 감상문 말곤 아무것도 없는데 \n진짜 굳이 패러독스 엔딩을 보겠다는 건가요? 그런분은 정말 환영입니다." }
         ]
     };
