@@ -48,7 +48,7 @@
 
         .title-wrapper { position: relative; margin-bottom: 3vh; z-index: 300; display: flex; justify-content: center; align-items: center; }
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
-        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2 vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
+        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
         
         @keyframes neonShift { 0% { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 2vh var(--cyan); } 100% { color: var(--purple); border-color: var(--purple); box-shadow: 0 0 2vh var(--purple); } }
         @keyframes neonShiftBg { 0% { background-color: var(--cyan); box-shadow: 0 0 1.5vh var(--cyan); } 100% { background-color: var(--purple); box-shadow: 0 0 1.5vh var(--purple); } }
@@ -197,7 +197,6 @@
             animation: floatingCat 4s infinite ease-in-out;
         }
         
-        /* 고양이 둥실둥실 애니메이션 */
         @keyframes floatingCat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-3vh) rotate(2deg); }
@@ -238,56 +237,54 @@
         }
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
-/* --- 모바일 환경 최적화 코드 (기존 로직 변경 없음) --- */
+
+        /* --- 모바일 환경 최적화 코드 --- */
         @media screen and (max-width: 768px) {
             body {
-                overflow: auto; /* 모바일에서 세로 스크롤 허용 */
+                overflow: auto; 
                 justify-content: flex-start;
                 padding-top: 2vh;
             }
 
             .game-container {
-                flex-direction: column; /* 가로 배치를 세로 배치로 변경 */
+                flex-direction: column !important; 
                 height: auto;
                 gap: 2vh;
                 padding-bottom: 5vh;
+                flex-wrap: wrap;
             }
 
             #game-box, #info-panel {
-                width: 90vw; /* 화면 너비에 맞춤 */
-                height: 70vh; /* 각 판넬의 높이 고정 */
+                width: 90vw !important;
+                height: 70vh; 
                 flex-shrink: 0;
             }
 
-            /* 우측 상단 정보(확률/턴카운트)가 잘 보이도록 영역 확보 */
             .chance-area {
                 height: 14vh;
                 margin-bottom: 1vh;
             }
 
-            /* 퀀텀 클라우드 드래그(스크롤) 가능하도록 설정 */
             #candidates-box {
                 flex-grow: 1;
-                overflow: hidden; /* 박스 자체는 고정 */
+                overflow: hidden;
             }
 
             #cand-list {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 0.8vh;
-                overflow-y: auto; /* 내부에서 드래그(스크롤) 가능 */
-                max-height: 45vh; /* 드래그 영역 확보 */
-                -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
-                scrollbar-width: thin; /* 스크롤바 표시 (필요시) */
+                overflow-y: auto; 
+                max-height: 45vh; 
+                -webkit-overflow-scrolling: touch; 
             }
 
-            /* 모바일에서 버튼 클릭이 쉽도록 크기 미세 조정 */
             .keypad button {
                 padding: 2.2vh 0;
             }
 
             .header-title {
-                font-size: 3.5vh; /* 제목 크기 축소 */
+                font-size: 3.5vh; 
                 letter-spacing: 0.5vh;
             }
 
@@ -823,7 +820,7 @@
             statusEl.style.color = "var(--red)";
         } else {
             entBtn.disabled = false;
-            statusEl.innerText = "양자고양이 좌표 측정 중...";
+            statusEl.innerText = "양자고양이 위치 관측 중...";
             statusEl.style.color = "var(--cyan)";
         }
     }
