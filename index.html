@@ -238,82 +238,35 @@
         }
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
-        
-        /* --- 모바일 환경 최적화 코드 수정 --- */
+
+        /* --- 모바일 환경 최적화 코드 (수정됨) --- */
         @media screen and (max-width: 768px) {
             body {
-                overflow-y: auto; 
-                justify-content: flex-start;
-                padding-top: 2vh;
+                overflow: auto; /* 세로 스크롤 허용 */
+                justify-content: flex-start; /* 상단부터 배치 */
+                padding: 4vh 0; /* 상하 여백 */
+                height: auto;
+                min-height: 100vh;
             }
 
             .game-container {
-                flex-direction: column; 
-                height: auto;
-                gap: 2vh;
-                padding-bottom: 10vh;
-                width: 95%;
+                flex-direction: column; /* 세로 배치 */
+                height: auto; /* 높이 제한 해제 */
+                gap: 3vh;
+                padding-bottom: 8vh;
+                width: 100%;
+                align-items: center;
+                flex-wrap: nowrap;
             }
 
             #game-box, #info-panel {
-                width: 100%; 
-                height: auto; 
-                min-height: 65vh;
-                flex-shrink: 0;
-            }
-            
-            #game-box {
-                padding: 2vh;
-                display: none; /* JS에서 제어 */
-            }
-
-            .input-view {
-                height: 8vh;
-                line-height: 8vh;
-                font-size: 4vh;
-                margin-bottom: 1.5vh;
-            }
-
-            .keypad {
-                gap: 0.8vh;
-            }
-
-            .keypad button {
-                padding: 2.5vh 0;
-                font-size: 2.2vh;
-            }
-
-            #log-window {
-                height: 20vh;
-                grid-auto-rows: 7vh;
-                margin-bottom: 1.5vh;
-            }
-
-            .chance-area {
-                height: 12vh;
-                margin-bottom: 2vh;
-            }
-
-            .chance-value {
-                font-size: 4.5vh;
-            }
-
-            .prob-cat-container {
-                width: 12vh;
-                height: 12vh;
-            }
-            
-            #turn-counter {
-                font-size: 6vh;
-            }
-
-            #cand-list {
-                max-height: 40vh;
-                grid-template-columns: repeat(4, 1fr);
+                width: 92vw; /* 화면 너비에 거의 가득 차게 */
+                height: 75vh; /* 각 판넬 높이는 유지 */
+                flex-shrink: 0; /* 줄어들지 않도록 */
             }
 
             .header-title {
-                font-size: 3vh;
+                font-size: 3.2vh;
                 letter-spacing: 0.5vh;
                 padding: 1vh 2vh;
             }
@@ -321,22 +274,32 @@
             #setup {
                 width: 90vw;
                 height: auto;
-                padding: 3vh;
+                padding: 4vh 2vh;
             }
             
-            .setup-cat, .setup-btn, .tutorial-btn {
+            .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container {
                 width: 80vw;
             }
-            
-            .new-keyhole {
-                width: 60vw;
+
+            #cand-list {
+                max-height: 40vh; /* 리스트 영역 확보 */
+            }
+
+            /* 하단 고정 요소들이 가리지 않도록 조정 */
+            #version-tag {
+                position: relative;
+                bottom: 0;
+                left: 0;
+                margin-top: 2vh;
+                text-align: center;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.0 version</div>
+<div id="version-tag">1.0t version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -986,7 +949,7 @@
                     <div id="tut-esc-guide" class="esc-guide" style="display:none;"></div>
                 </div>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50;">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50; padding: 5vh 0;">
                 <img src="${mediaUrl}" style="border:0.4vh solid ${color}; border-radius:4vh; box-shadow: 0 0 3vh ${color}; width: 45vh; height: 45vh; object-fit: cover; margin-bottom: 2vh;">
                 <h1 style="font-size:7vh; color:${color}; margin: 1vh 0; text-shadow:0 0 2vh ${color};">${type}</h1>
                 <h2 style="font-size:4vh; color:#fff; margin-bottom: 1vh;">${result}</h2>
