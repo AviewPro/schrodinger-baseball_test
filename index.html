@@ -73,7 +73,7 @@
             padding-bottom: 2vh; 
         }
         
-        #setup { width: 50vh; height: auto; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 5vh; }
+        #setup { width: 50vh; height: auto; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2vh; }
         
         .setup-box-container { position: relative; width: 35vh; margin-bottom: 2vh; }
         .setup-cat { width: 35vh; height: 35vh; border-radius: 4vh; border: 0.4vh solid var(--green); object-fit: cover; animation: neonShift 10s infinite alternate linear; display: block; }
@@ -163,7 +163,7 @@
             box-shadow: 0 0 10vh rgba(0, 0, 0, 1);
         }
 
-        #setup-footer { margin-top: 2vh; padding-bottom: 2vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; flex-shrink: 0; }
+        #setup-footer { margin-top: 1vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; flex-shrink: 0; }
 
         #tutorial-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -295,7 +295,7 @@
     <div class="header-title">SCHRÖDINGER BASEBALL</div>
 </div>
 
-<div class="game-container">
+<div class="game-container" style="display: flex; flex-direction: column; align-items: center;">
     <div id="setup">
         <div class="setup-box-container">
             <img src="Neon cat.gif" class="setup-cat">
@@ -303,42 +303,44 @@
         <button onclick="startTutorial()" class="tutorial-btn">How to Play</button>
         <button onclick="startGame()" class="setup-btn">Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
-        <div id="setup-footer">
-            이 게임은 제미나이와 그록을 이용하여 제작되었습니다.<br>
-            저작권은 나한테 있나? 잘 모르겠습니다. 그냥 가볍게 즐겨주세요.
-        </div>
+    </div>
+    <div id="setup-footer">
+        이 게임은 제미나이와 그록을 이용하여 제작되었습니다.<br>
+        저작권은 나한테 있나? 잘 모르겠습니다. 그냥 가볍게 즐겨주세요.
     </div>
 
-    <div id="game-box">
-        <div class="status" id="status">준비 완료</div>
-        <div id="log-window"></div>
-        <div class="input-view" id="display">----</div>
-        <div class="keypad" id="main-keypad">
-            <button class="key-btn" data-key="7" onclick="press('7')">7</button><button class="key-btn" data-key="8" onclick="press('8')">8</button><button class="key-btn" data-key="9" onclick="press('9')">9</button>
-            <button id="obs-btn" class="btn-obs" onclick="clickObs()">OBS</button>
-            <button class="key-btn" data-key="4" onclick="press('4')">4</button><button class="key-btn" data-key="5" onclick="press('5')">5</button><button class="key-btn" data-key="6" onclick="press('6')">6</button>
-            <button id="clr-btn" class="btn-clr" onclick="clickSpecial('CLR')">CLR</button>
-            <button class="key-btn" data-key="1" onclick="press('1')">1</button><button class="key-btn" data-key="2" onclick="press('2')">2</button><button class="key-btn" data-key="3" onclick="press('3')">3</button>
-            <button id="ent-btn" class="btn-ent" onclick="clickSpecial('ENT')">ENT</button>
-            <button id="zero-btn" data-key="0" style="grid-column: span 3" onclick="press('0')">0</button>
+    <div style="display: flex; flex-wrap: wrap; gap: 3vh; justify-content: center; width: 100%;">
+        <div id="game-box">
+            <div class="status" id="status">준비 완료</div>
+            <div id="log-window"></div>
+            <div class="input-view" id="display">----</div>
+            <div class="keypad" id="main-keypad">
+                <button class="key-btn" data-key="7" onclick="press('7')">7</button><button class="key-btn" data-key="8" onclick="press('8')">8</button><button class="key-btn" data-key="9" onclick="press('9')">9</button>
+                <button id="obs-btn" class="btn-obs" onclick="clickObs()">OBS</button>
+                <button class="key-btn" data-key="4" onclick="press('4')">4</button><button class="key-btn" data-key="5" onclick="press('5')">5</button><button class="key-btn" data-key="6" onclick="press('6')">6</button>
+                <button id="clr-btn" class="btn-clr" onclick="clickSpecial('CLR')">CLR</button>
+                <button class="key-btn" data-key="1" onclick="press('1')">1</button><button class="key-btn" data-key="2" onclick="press('2')">2</button><button class="key-btn" data-key="3" onclick="press('3')">3</button>
+                <button id="ent-btn" class="btn-ent" onclick="clickSpecial('ENT')">ENT</button>
+                <button id="zero-btn" data-key="0" style="grid-column: span 3" onclick="press('0')">0</button>
+            </div>
         </div>
-    </div>
 
-    <div id="info-panel">
-        <div id="dead-x">X</div>
-        <div class="chance-area" id="chance-area">
-            <div id="chance-box">
-                <span id="chance-title" class="chance-title">Measuring Energy Level</span>
-                <div id="chance-val" class="chance-value">--.--%</div>
+        <div id="info-panel">
+            <div id="dead-x">X</div>
+            <div class="chance-area" id="chance-area">
+                <div id="chance-box">
+                    <span id="chance-title" class="chance-title">Measuring Energy Level</span>
+                    <div id="chance-val" class="chance-value">--.--%</div>
+                </div>
+                <div class="prob-cat-container">
+                    <div id="turn-counter">7</div>
+                    <img id="prob-cat-img" src="Neon cat.gif" class="prob-cat">
+                </div>
             </div>
-            <div class="prob-cat-container">
-                <div id="turn-counter">7</div>
-                <img id="prob-cat-img" src="Neon cat.gif" class="prob-cat">
+            <div id="candidates-box">
+                <div class="cand-title">Quantum Cloud</div>
+                <div id="cand-list"></div>
             </div>
-        </div>
-        <div id="candidates-box">
-            <div class="cand-title">Quantum Cloud</div>
-            <div id="cand-list"></div>
         </div>
     </div>
 </div>
@@ -459,6 +461,7 @@
         if(successLoopInterval) { clearInterval(successLoopInterval); successLoopInterval = null; }
         if(meowLoopInterval) { clearInterval(meowLoopInterval); meowLoopInterval = null; }
         document.getElementById('setup').style.display = 'none';
+        document.getElementById('setup-footer').style.display = 'none';
         document.getElementById('game-box').style.display = 'flex';
         document.getElementById('info-panel').style.display = 'flex';
         resetGameState();
@@ -884,15 +887,15 @@
 
         let subButtons = "";
         if (isParadox) {
-            subButtons = `<button onclick="window.showCredits()" style="font-family: 'Bebas Neue', cursive; width:65vh; padding:2vh 0; margin-top:2vh; background:#222; color:${color}; border:0.4vh solid ${color}; cursor:pointer; font-size:5vh; border-radius:2vh; font-weight:bold; box-shadow: 0 0 2vh ${color}; z-index:100; letter-spacing:0.3vh;">Credits</button>`;
+            subButtons = `<button onclick="window.showCredits()" style="font-family: 'Bebas Neue', cursive; width:65vh; padding:2vh 0; margin-top:5vh; background:#222; color:${color}; border:0.4vh solid ${color}; cursor:pointer; font-size:5vh; border-radius:2vh; font-weight:bold; box-shadow: 0 0 2vh ${color}; z-index:100; letter-spacing:0.3vh;">Credits</button>`;
         } else {
             const tipType = isWin ? 'success' : 'fail';
             subButtons = `
-                <div style="display:flex; flex-direction:column; gap: 1vh; align-items: center; margin-top:1.5vh; width: 62vh; z-index:100;">
-                    <button onclick="window.showTips('${tipType}')" style="font-family: 'Bebas Neue', cursive; width:100%; padding:1vh 0; background:#333; color:${color}; border:0.2vh solid ${color}; cursor:pointer; font-size:4vh; border-radius:1.5vh; font-weight:bold; letter-spacing:0.2vh;">TIPS</button>
-                    <div style="display:flex; gap: 2vh; width: 100%;">
-                        <button onclick="location.reload()" style="font-family: 'Bebas Neue', cursive; flex:1; padding:1vh 0; background:#222; color:#fff; border:0.2vh solid #444; cursor:pointer; font-size:3vh; border-radius:1.5vh; letter-spacing:0.1vh;">Main Menu</button>
-                        <button onclick="restartDirectly()" style="font-family: 'Bebas Neue', cursive; flex:2; padding:1vh 0; background:#222; color:#fff; border:0.2vh solid ${color}; cursor:pointer; font-size:3vh; border-radius:1.5vh; letter-spacing:0.1vh;">Restart</button>
+                <div style="display:flex; flex-direction:column; gap: 2vh; align-items: center; margin-top:4vh; width: 62vh; z-index:100;">
+                    <button onclick="window.showTips('${tipType}')" style="font-family: 'Bebas Neue', cursive; width:100%; padding:1.2vh 0; background:#333; color:${color}; border:0.2vh solid ${color}; cursor:pointer; font-size:4vh; border-radius:1.5vh; font-weight:bold; letter-spacing:0.2vh;">TIPS</button>
+                    <div style="display:flex; gap: 2.5vh; width: 100%;">
+                        <button onclick="location.reload()" style="font-family: 'Bebas Neue', cursive; flex:1; padding:1.2vh 0; background:#222; color:#fff; border:0.2vh solid #444; cursor:pointer; font-size:3.2vh; border-radius:1.5vh; letter-spacing:0.1vh;">Main Menu</button>
+                        <button onclick="restartDirectly()" style="font-family: 'Bebas Neue', cursive; flex:2; padding:1.2vh 0; background:#222; color:#fff; border:0.2vh solid ${color}; cursor:pointer; font-size:3.2vh; border-radius:1.5vh; letter-spacing:0.1vh;">Restart</button>
                     </div>
                 </div>`;
         }
@@ -921,11 +924,11 @@
                     <div id="tut-esc-guide" class="esc-guide" style="display:none;"></div>
                 </div>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50; padding: 2vh 0; overflow: hidden;">
-                <img src="${mediaUrl}" style="border:0.4vh solid ${color}; border-radius:4vh; box-shadow: 0 0 3vh ${color}; width: 40vh; height: 40vh; object-fit: cover; margin-bottom: 1vh;">
-                <h1 style="font-size:6vh; color:${color}; margin: 0.5vh 0; text-shadow:0 0 2vh ${color};">${type}</h1>
-                <h2 style="font-size:3.5vh; color:#fff; margin-bottom: 0.5vh;">${result}</h2>
-                <p style="color:${isParadox ? color : '#aaa'}; font-size:2vh; max-width:80vh; line-height:1.2; margin: 0.5vh 0;">${msg}</p>
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100vh; text-align:center; box-sizing: border-box; position:relative; z-index:50; padding: 3vh 0; overflow: hidden;">
+                <img src="${mediaUrl}" style="border:0.4vh solid ${color}; border-radius:4vh; box-shadow: 0 0 3vh ${color}; width: 40vh; height: 40vh; object-fit: cover; margin-bottom: 2vh;">
+                <h1 style="font-size:6vh; color:${color}; margin: 1vh 0; text-shadow:0 0 2vh ${color};">${type}</h1>
+                <h2 style="font-size:3.5vh; color:#fff; margin-bottom: 1vh;">${result}</h2>
+                <p style="color:${isParadox ? color : '#aaa'}; font-size:2.2vh; max-width:80vh; line-height:1.4; margin: 1vh 0;">${msg}</p>
                 ${subButtons}
             </div>`;
             
