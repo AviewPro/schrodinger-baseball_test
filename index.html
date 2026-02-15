@@ -10,6 +10,13 @@
             --unit: 1vh; 
         }
         
+        /* 모바일 스크롤 허용을 위해 height와 overflow 수정 */
+        html, body {
+            min-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
         body { 
             background: linear-gradient(rgba(5, 5, 7, 0.8), rgba(5, 5, 7, 0.8)), 
                         url('cat footage.gif');
@@ -24,13 +31,11 @@
             justify-content: center; 
             min-height: 100vh; 
             margin: 0; 
-            overflow: hidden; 
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* 버전 표기 스타일 - 폰트 크기 2배 확대 유지 */
         #version-tag {
             position: fixed;
             bottom: 1.5vh;
@@ -46,9 +51,9 @@
         #sound-control input[type=range] { -webkit-appearance: slider-vertical; width: 0.8vh; height: 15vh; cursor: pointer; }
         .sound-icon { font-size: 1.5vh; color: var(--cyan); }
 
-        .title-wrapper { position: relative; margin-bottom: 3vh; z-index: 300; display: flex; justify-content: center; align-items: center; }
+        .title-wrapper { position: relative; margin-bottom: 3vh; z-index: 300; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
-        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2 vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
+        .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh; }
         
         @keyframes neonShift { 0% { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 2vh var(--cyan); } 100% { color: var(--purple); border-color: var(--purple); box-shadow: 0 0 2vh var(--purple); } }
         @keyframes neonShiftBg { 0% { background-color: var(--cyan); box-shadow: 0 0 1.5vh var(--cyan); } 100% { background-color: var(--purple); box-shadow: 0 0 1.5vh var(--purple); } }
@@ -58,7 +63,7 @@
             100% { filter: drop-shadow(0 0 1.5vh var(--purple)) drop-shadow(0 0 3vh var(--purple)); } 
         }
 
-        .game-container { display: flex; flex-wrap: nowrap; gap: 3vh; align-items: center; justify-content: center; width: 95%; height: 75vh; }
+        .game-container { display: flex; flex-wrap: nowrap; gap: 3vh; align-items: flex-start; justify-content: center; width: 95%; height: 75vh; }
         
         #setup { width: 50vh; height: 72vh; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
@@ -75,7 +80,7 @@
 
         .new-keyhole { width: 35vh; height: auto; margin-top: 1.5vh; animation: keyholeNeonShift 10s infinite alternate linear; }
 
-        #game-box, #info-panel { width: 50vh; height: 75vh; padding: 2.5vh; border-radius: 2.5vh; box-sizing: border-box; display: flex; flex-direction: column; }
+        #game-box, #info-panel { width: 50vh; height: 75vh; padding: 2.5vh; border-radius: 2.5vh; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; }
         #game-box { background: rgba(17, 17, 17, 0.9); border: 0.1vh solid #333; position: relative; display: none; }
         #info-panel { background: rgba(10, 10, 15, 0.9); border: 0.1vh solid #333; display: none; position: relative; }
         
@@ -149,7 +154,7 @@
             box-shadow: 0 0 10vh rgba(0, 0, 0, 1);
         }
 
-        #setup-footer { margin-top: 2vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; }
+        #setup-footer { margin-top: 2vh; font-size: 1.3vh; color: #888; text-align: center; z-index: 300; line-height: 1.6; flex-shrink: 0; }
 
         #tutorial-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -197,7 +202,6 @@
             animation: floatingCat 4s infinite ease-in-out;
         }
         
-        /* 고양이 둥실둥실 애니메이션 */
         @keyframes floatingCat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-3vh) rotate(2deg); }
@@ -239,67 +243,52 @@
         @keyframes slide-h { from { transform: translateX(-150%); } to { transform: translateX(150vw); } }
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
 
-        /* --- 모바일 환경 최적화 코드 (수정됨) --- */
+        /* --- 모바일 환경 최적화 --- */
         @media screen and (max-width: 768px) {
-            body {
-                overflow: auto; /* 세로 스크롤 허용 */
-                justify-content: flex-start; /* 상단부터 배치 */
-                padding: 4vh 0; /* 상하 여백 */
-                height: auto;
-                min-height: 100vh;
+            body { 
+                justify-content: flex-start; 
+                padding: 5vh 0; 
+                height: auto; 
             }
-
-            .game-container {
-                flex-direction: column; /* 세로 배치 */
-                height: auto; /* 높이 제한 해제 */
-                gap: 3vh;
-                padding-bottom: 8vh;
-                width: 100%;
-                align-items: center;
-                flex-wrap: nowrap;
+            .game-container { 
+                flex-direction: column; 
+                height: auto; 
+                width: 90%; 
+                gap: 5vh; 
+                padding-bottom: 10vh; 
             }
-
-            #game-box, #info-panel {
-                width: 92vw; /* 화면 너비에 거의 가득 차게 */
-                height: 75vh; /* 각 판넬 높이는 유지 */
-                flex-shrink: 0; /* 줄어들지 않도록 */
+            #game-box, #info-panel { 
+                width: 100%; 
+                height: 75vh; 
+                flex-shrink: 0; 
             }
-
-            .header-title {
-                font-size: 3.2vh;
-                letter-spacing: 0.5vh;
-                padding: 1vh 2vh;
+            #setup { 
+                width: 100%; 
+                height: auto; 
+                padding: 5vh 2vh; 
             }
-
-            #setup {
-                width: 90vw;
-                height: auto;
-                padding: 4vh 2vh;
+            .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { 
+                width: 80vw; 
             }
-            
-            .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container {
-                width: 80vw;
+            .header-title { 
+                font-size: 4vh; 
+                letter-spacing: 0.5vh; 
             }
-
-            #cand-list {
-                max-height: 40vh; /* 리스트 영역 확보 */
-            }
-
-            /* 하단 고정 요소들이 가리지 않도록 조정 */
             #version-tag {
                 position: relative;
-                bottom: 0;
-                left: 0;
-                margin-top: 2vh;
+                bottom: auto;
+                left: auto;
+                margin-top: 5vh;
                 text-align: center;
                 width: 100%;
+                font-size: 2vh;
             }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.0t version</div>
+<div id="version-tag">1.0 version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -817,7 +806,7 @@
             statusEl.style.color = "var(--red)";
         } else {
             entBtn.disabled = false;
-            statusEl.innerText = "양자고양이 좌표 측정 중...";
+            statusEl.innerText = "고양이 위치 관측 중...";
             statusEl.style.color = "var(--cyan)";
         }
     }
