@@ -228,14 +228,14 @@
         }
         #credit-content {
             position: absolute; top: 100%; width: 90%; text-align: center; color: #ddd;
-            font-size: 2.1vh; line-height: 2.2; white-space: pre-wrap; padding: 10vh 0;
+            font-size: 2.1vh; line-height: 2.2; white-space: pre-wrap; padding: 10vh 0 2vh 0;
             transition: none;
             pointer-events: none;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .credit-logo { width: 20.25vh; height: auto; margin-top: 3vh; filter: brightness(0) invert(1); opacity: 0.8; }
+        .credit-logo { width: 20.25vh; height: auto; margin-top: 3vh; margin-bottom: 0; filter: brightness(0) invert(1); opacity: 0.8; }
         .credit-esc { position: fixed; bottom: 3vh; right: 3vh; color: #666; font-size: 1.5vh; z-index: 15003; }
 
         #flash-overlay { 
@@ -370,7 +370,6 @@
         .then(response => response.json())
         .then(data => { 
             textData = data;
-            // 데이터 로드 완료 확인용
             console.log("textData loaded");
         })
         .catch(error => console.error('Error loading textdata:', error));
@@ -829,9 +828,7 @@
     }
 
     function clickObs() {
-        // 튜토리얼 중이 아닐 때만 작동
         if(isTutorial) return;
-        
         if(!textData) {
             alert("데이터 로드 중입니다. 잠시만 기다려주세요.");
             return;
