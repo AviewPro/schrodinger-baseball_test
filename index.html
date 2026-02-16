@@ -225,6 +225,8 @@
             opacity: 1; box-shadow: 0 1vh 3vh rgba(0,0,0,0.8), 0 0 2vh rgba(255,255,255,0.3);
             transform: translateZ(50px);
             animation: floatingCat 4s infinite ease-in-out;
+            cursor: pointer;
+            pointer-events: auto;
         }
         
         @keyframes floatingCat {
@@ -293,7 +295,7 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.2 version</div>
+<div id="version-tag">1.3 Version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -303,11 +305,11 @@
 </div>
 
 <div id="credit-overlay">
-    <div class="side-cat-box"><img src="귀여운고양이도트2.jpg" class="side-cat-img"></div>
+    <div class="side-cat-box"><img src="귀여운고양이도트2.jpg" class="side-cat-img" onclick="_0xplayNyaBgm()"></div>
     <div id="credit-container" onmousedown="_0x8c21(event)" onmouseup="_0x7d4e(event)">
         <div id="credit-content"></div>
     </div>
-    <div class="side-cat-box"><img src="귀여운고양이도트3.jpg" class="side-cat-img" style="animation-delay: -2s;"></div>
+    <div class="side-cat-box"><img src="귀여운고양이도트3.jpg" class="side-cat-img" style="animation-delay: -2s;" onclick="_0xplayNyaBgm()"></div>
     <div class="credit-esc">Press ESC to Close</div>
 </div>
 
@@ -435,7 +437,7 @@
         _0xsuccessSfx.volume = _0xcurrentVolume;
         _0xspecialClickSfx.volume = Math.min(1.0, _0xcurrentVolume * 3.0);
         _0xnyaBgmSfx.volume = _0xcurrentVolume;
-        _0xlightsOffSfx.volume = Math.min(1.0, _0xcurrentVolume * 2.0);
+        _0xlightsOffSfx.volume = Math.min(1.0, _0xcurrentVolume * 1.5); // 소등 음량 25% 감소 (2.0 -> 1.5)
     }
     
     _0x3f2a(0.15);
@@ -733,7 +735,6 @@
         if(_0xaiCandidates.length === 0) {
             if(!_0xparadoxMusicTriggered) {
                 _0xbgm.pause();
-                // 4초 뒤에 BGM 시작
                 setTimeout(() => {
                     _0xbgm = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3");
                     _0xbgm.loop = true;
@@ -743,16 +744,13 @@
                 _0xparadoxMusicTriggered = true;
             }
             if(!_0xzeroOverlayTriggered) {
-                // 소등 사운드 재생
                 _0xlightsOffSfx.currentTime = 0;
                 _0xlightsOffSfx.play().catch(e=>{});
 
-                // 암전 효과: 비네트(빨간색 효과) 제거를 위해 배경을 순수 검정으로 설정
                 flashOverlay.style.transition = 'none';
                 flashOverlay.style.background = '#000';
                 flashOverlay.style.opacity = '1';
                 
-                // 3초 대기 후 서서히 밝아짐
                 setTimeout(() => { 
                     flashOverlay.style.transition = 'opacity 1.5s ease';
                     flashOverlay.style.opacity = '0'; 
@@ -959,7 +957,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.2 version</div>
+            <div id="version-tag">1.3 Version</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
@@ -967,11 +965,11 @@
                 <span class="sound-icon" style="font-size:1vh;">VOL</span>
             </div>
             <div id="credit-overlay">
-                <div class="side-cat-box"><img src="귀여운고양이도트2.jpg" class="side-cat-img"></div>
+                <div class="side-cat-box"><img src="귀여운고양이도트2.jpg" class="side-cat-img" onclick="_0xplayNyaBgm()"></div>
                 <div id="credit-container" onmousedown="_0x8c21(event)" onmouseup="_0x7d4e(event)">
                     <div id="credit-content"></div>
                 </div>
-                <div class="side-cat-box"><img src="귀여운고양이도트3.jpg" class="side-cat-img" style="animation-delay: -2s;"></div>
+                <div class="side-cat-box"><img src="귀여운고양이도트3.jpg" class="side-cat-img" style="animation-delay: -2s;" onclick="_0xplayNyaBgm()"></div>
                 <div class="credit-esc">Press ESC to Close</div>
             </div>
             <div id="tutorial-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:5000; flex-direction:column; align-items:center; justify-content:center;">
