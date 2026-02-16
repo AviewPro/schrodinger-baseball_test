@@ -959,11 +959,11 @@
         
         content.innerHTML = `
             <div>${text}</div>
-            <img src="귀여운고양이.jpg" onclick="playNyaBgm()" style="width:67.5vh; height:auto; margin-top:5vh; border-radius:2vh; border:0.4vh solid var(--green); box-shadow: 0 0 2vh var(--green); cursor:pointer;">
+            <img src="귀여운고양이.jpg" onclick="playNyaBgm()" style="width:67.5vh; height:auto; margin-top:2vh; border-radius:2vh; border:0.4vh solid var(--green); box-shadow: 0 0 2vh var(--green); cursor:pointer;">
             <img src="Aview.png" class="credit-logo">
         `;
         overlay.style.display = 'flex';
-        creditY = window.innerHeight * 0.1;
+        creditY = window.innerHeight * 0;
         creditSpeed = 0.55;
         
         if (creditScrollInterval) clearInterval(creditScrollInterval);
