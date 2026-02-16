@@ -12,7 +12,6 @@
         
         html {
             height: 100%;
-            /* 모바일 스크롤 허용을 위해 overflow: hidden 제거 */
         }
 
         body { 
@@ -27,10 +26,9 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: flex-start;
-            min-height: 100vh; /* height 대신 min-height 사용하여 내용이 길어지면 늘어나게 함 */
+            min-height: 100vh;
             margin: 0; 
             padding: 0;
-            /* 모바일 스크롤 허용을 위해 overflow: hidden 제거 */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -69,7 +67,7 @@
             justify-content: center; 
             width: 95%; 
             height: auto; 
-            padding-bottom: 5vh; /* 모바일에서 하단 여유 공간 확보 */
+            padding-bottom: 5vh;
         }
         
         #setup { width: 50vh; height: auto; padding: 4vh; border-radius: 2.5vh; background: rgba(10, 10, 15, 0.95); border: 0.4vh solid var(--cyan); z-index: 200; text-align: center; box-sizing: border-box; box-shadow: 0 0 3vh rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1vh; }
@@ -257,13 +255,12 @@
                 width: 90vw; 
                 height: auto; 
                 min-height: 80vh; 
-                flex-shrink: 0; /* 모바일에서 요소가 압축되지 않도록 함 */
+                flex-shrink: 0;
             }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
             .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
             .panel-center { width: 90vw; padding: 3vh; }
             
-            /* 모바일 세로 화면에서 정보 패널이 게임 박스 아래로 가도록 설정 */
             .game-container > div[style*="flex-wrap: wrap"] {
                 flex-direction: column !important;
                 align-items: center !important;
@@ -273,7 +270,7 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.1 version</div>
+<div id="version-tag">1.2 version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -405,7 +402,7 @@
             { title: "성공 시 참고팁 (2/5)", desc: "단순히 성공을 하는거 자체는 너무 난이도가 낮으니까요. \n<b style='color:var(--red);'>이 게임은 정확히 6회까지 100%로 양자고양이의 좌표를 특정하고 \n7회차 측정까지 진행해서 양자고양이를 잡는 게임입니다.</b>" },
             { title: "성공 시 참고팁 (3/5)", desc: "이 게임에서 일반 숫자야구의 팁은 큰 도움이 안 될수도 있습니다. \n양자고양이는 계속해서 최대한 안전해보이는 좌표로 도망칩니다. \n정확히는 가능한 후보숫자가 가장 많은 볼카운트 대답한다는 의미죠." },
             { title: "성공 시 참고팁 (4/5)", desc: "고정된 알고리즘이기 때문에 똑같은 질문을 100번 하면 100번 똑같이 답합니다. \n일정한 빌드를 만들어서 가장 높은 확률을 따라가면 최적화되는 구조입니다. \n측정용 숫자를 교차로 배치해서 계속해서 숨을곳을 좁히세요." },
-            { title: "성공 시 참고팁 (5/5)", desc: "어차피 깨봤자 개발자의 허접한 감상문 말곤 아무것도 없는데 \n진짜 굳이 패러독스 엔딩을 보겠다는 건가요? 그런분은 정말 환영입니다." }
+            { title: "성공 시 참고팁 (5/5)", desc: "어차피 깨봤자 개발자의 허접한 감상문 말곤 아무것도 없는데 \n진짜 굳이 패러독스 엔딩을 보겠다는 건가요? 그런분은 정말 환영입니다. \n힌트를 드리면 제 클리어 루트는 네번째 측정에서 4.17%가 됩니다. 포기하는걸 포기하세요. " }
         ]
     };
 
@@ -911,7 +908,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.1 version</div>
+            <div id="version-tag">1.2 version</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
@@ -949,7 +946,7 @@
 
     let creditScrollInterval = null;
     let creditY = 0;
-    let creditSpeed = 1;
+    let creditSpeed = 0.55;
 
     window.showCredits = function() {
         const overlay = document.getElementById('credit-overlay');
@@ -995,21 +992,21 @@
             <img src="Aview.png" class="credit-logo">
         `;
         overlay.style.display = 'flex';
-        creditY = window.innerHeight;
-        creditSpeed = 1;
+        creditY = window.innerHeight * 0.45;
+        creditSpeed = 0.55;
         
         if (creditScrollInterval) clearInterval(creditScrollInterval);
         creditScrollInterval = setInterval(() => {
             creditY -= creditSpeed;
             content.style.transform = `translateY(${creditY}px)`;
-            if (creditY < -content.scrollHeight) {
+            if (creditY < -(content.scrollHeight + 100)) {
                 clearInterval(creditScrollInterval);
             }
         }, 16);
     };
 
-    window.accelerateCredits = function(e) { if(e) e.stopPropagation(); creditSpeed = 5; };
-    window.normalizeCredits = function(e) { if(e) e.stopPropagation(); creditSpeed = 1; };
+    window.accelerateCredits = function(e) { if(e) e.stopPropagation(); creditSpeed = 4.5; };
+    window.normalizeCredits = function(e) { if(e) e.stopPropagation(); creditSpeed = 0.55; };
     window.closeCredits = function() {
         const overlay = document.getElementById('credit-overlay');
         if(overlay) {
