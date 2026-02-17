@@ -407,6 +407,7 @@
     let _0xsuccessLoopInterval = null; 
     let _0xmeowLoopInterval = null; 
     let _0xmeowCount = 0; 
+    let _0xglobalClickCount = 0; // 버튼 클릭 횟수 카운터 변수 추가
     
     let _0xbgm = new Audio("002. ErikMMusic - The Dusty Attic.mp3");
     _0xbgm.loop = true;
@@ -433,11 +434,11 @@
             _0xbgm.volume = _0xcurrentVolume; 
         }
         _0xmeowSfx.volume = Math.min(1.0, _0xcurrentVolume * 1.17); 
-        _0xemergencySfx.volume = Math.min(1.0, _0xcurrentVolume * 2.56); // 비상알람 음량 추가 20% 감소 (3.2 -> 2.56)
+        _0xemergencySfx.volume = Math.min(1.0, _0xcurrentVolume * 2.56); 
         _0xfailSfx.volume = Math.min(1.0, _0xcurrentVolume * 3.0); 
         _0xsuccessSfx.volume = _0xcurrentVolume;
         _0xspecialClickSfx.volume = Math.min(1.0, _0xcurrentVolume * 3.0);
-        _0xnyaBgmSfx.volume = _0xcurrentVolume * 0.6; // 냥이브금 음량 40% 감소
+        _0xnyaBgmSfx.volume = _0xcurrentVolume * 0.6;
         _0xlightsOffSfx.volume = Math.min(1.0, _0xcurrentVolume * 1.5);
     }
     
@@ -459,7 +460,7 @@
     function _0xplayNyaBgm() {
         if(_0xbgm) _0xbgm.pause();
         _0xbgm = _0xnyaBgmSfx;
-        _0xbgm.volume = _0xcurrentVolume * 0.6; // 40% 감소 반영
+        _0xbgm.volume = _0xcurrentVolume * 0.6;
         _0xbgm.currentTime = 0;
         _0xbgm.play().catch(e=>{});
     }
@@ -487,6 +488,7 @@
 
     function _0x4c5b() {
         _0xplayClick();
+        _0xglobalClickCount++; // 카운터 증가
         if(_0xfailLoopInterval) { clearInterval(_0xfailLoopInterval); _0xfailLoopInterval = null; }
         if(_0xsuccessLoopInterval) { clearInterval(_0xsuccessLoopInterval); _0xsuccessLoopInterval = null; }
         if(_0xmeowLoopInterval) { clearInterval(_0xmeowLoopInterval); _0xmeowLoopInterval = null; }
@@ -510,6 +512,7 @@
 
     function _0xresDir() {
         _0xplayClick();
+        _0xglobalClickCount++; // 카운터 증가
         if(_0xfailLoopInterval) { clearInterval(_0xfailLoopInterval); _0xfailLoopInterval = null; }
         if(_0xsuccessLoopInterval) { clearInterval(_0xsuccessLoopInterval); _0xsuccessLoopInterval = null; }
         if(_0xmeowLoopInterval) { clearInterval(_0xmeowLoopInterval); _0xmeowLoopInterval = null; }
@@ -519,13 +522,21 @@
         _0xbgm.playbackRate = 2.0;
         document.body.innerHTML = _0xoriginalBodyContent;
         _0x3f2a(document.getElementById('volume-slider')?.value || 0.15);
-        _0x4c5b();
+        _0x4c5b_re(); // 내부적 게임 전환 (카운트 중복 방지 위해 래퍼 함수 사용 가능하지만 여기서는 단순화)
+    }
+    
+    function _0x4c5b_re() {
+        document.getElementById('setup').style.display = 'none';
+        document.getElementById('setup-footer').style.display = 'none';
+        document.getElementById('game-box').style.display = 'flex';
+        document.getElementById('info-panel').style.display = 'flex';
+        _0xresGm();
     }
 
     function _0x1d2e() {
         if(!_0xtextData) return;
         _0xisTutorial = true; _0xcurrentTipType = ""; _0xtutorialStep = 1;
-        _0x4c5b();
+        _0x4c5b_re();
         document.getElementById('obs-btn').disabled = true;
         document.getElementById('tutorial-overlay').style.display = 'flex';
         _0xappTut();
@@ -638,7 +649,6 @@
         
         if (e.key === 'Enter') {
             e.preventDefault();
-            // 메인 메뉴 화면(game-box가 none인 상태)에서는 엔터키 비활성화
             if (document.getElementById('game-box').style.display === 'flex') {
                 _0x7c3d('ENT');
             }
@@ -738,6 +748,7 @@
         const deadX = document.getElementById('dead-x');
         const flashOverlay = document.getElementById('flash-overlay');
         const paradoxOverlay = document.getElementById('paradox-cat-overlay');
+        const statusEl = document.getElementById('status');
         
         if(_0xaiCandidates.length === 0) {
             if(!_0xparadoxMusicTriggered) {
@@ -777,6 +788,12 @@
             catImg.style.opacity = '0'; catImg.style.filter = 'blur(2vh)';
             turnCounter.style.color = 'var(--green)'; turnCounter.style.textShadow = '0 0 2vh var(--green)';
             deadX.style.display = 'block'; 
+
+            // 패러독스 시 메시지 및 스타일 수정
+            statusEl.innerText = `[${_0xglobalClickCount}]회 시도 끝에 패러독스를 찾으셨습니다. 축하합니다.`;
+            statusEl.style.animation = "none";
+            statusEl.style.color = "var(--green)";
+            statusEl.style.textShadow = "0 0 1.5vh var(--green)";
         } else {
             deadX.style.display = 'none';
             if(paradoxOverlay) { paradoxOverlay.style.display = 'none'; paradoxOverlay.style.animation = 'none'; }
@@ -801,7 +818,7 @@
                 currentShadow = '0 0 2.5vh var(--cyan)';
                 _0xalarmTriggered = false;
             } else {
-                _0alarmTriggered = false;
+                _0xalarmTriggered = false;
             }
 
             chanceValEl.style.color = currentColor;
@@ -819,6 +836,19 @@
             catImg.style.display = 'block'; catImg.style.opacity = opacityAmount;
             catImg.style.filter = `blur(${blurAmount}vh)`; 
             catImg.style.borderColor = currentColor;
+
+            const entBtn = document.getElementById('ent-btn');
+            if(_0xturnCount <= 0) {
+                entBtn.disabled = true;
+                statusEl.innerText = "측정 완료 (관측만 가능)";
+                statusEl.style.animation = "none";
+                statusEl.style.color = "var(--red)";
+                statusEl.style.textShadow = "0 0 1vh var(--red)";
+            } else {
+                entBtn.disabled = false;
+                statusEl.innerText = "양자고양이 위치 관측 중...";
+                statusEl.style.animation = "neonShift 10s infinite alternate linear";
+            }
         }
         
         document.getElementById('log-window').innerHTML = _0xhistory.map(h => {
@@ -830,31 +860,9 @@
         const slice = [..._0xaiCandidates].sort(() => 0.5 - Math.random()).slice(0, 100);
         
         let pixelateStrength = 0;
-        if (prob >= 25) {
-            pixelateStrength = 0; 
-        } else if (prob >= 5) {
-            pixelateStrength = 0.05; 
-        } else if (prob >= 1) {
-            pixelateStrength = 0.15; 
-        } else {
-            pixelateStrength = 0.25; 
-        }
+        if (prob >= 25) { pixelateStrength = 0; } else if (prob >= 5) { pixelateStrength = 0.05; } else if (prob >= 1) { pixelateStrength = 0.15; } else { pixelateStrength = 0.25; }
 
         document.getElementById('cand-list').innerHTML = slice.map(c => `<div class="cand-item" style="filter: blur(${pixelateStrength}vh) contrast(180%);">${c}</div>`).join('');
-
-        const statusEl = document.getElementById('status');
-        const entBtn = document.getElementById('ent-btn');
-        if(_0xturnCount <= 0) {
-            entBtn.disabled = true;
-            statusEl.innerText = "측정 완료 (관측만 가능)";
-            statusEl.style.animation = "none";
-            statusEl.style.color = "var(--red)";
-            statusEl.style.textShadow = "0 0 1vh var(--red)";
-        } else {
-            entBtn.disabled = false;
-            statusEl.innerText = "양자고양이 위치 관측 중...";
-            statusEl.style.animation = "neonShift 10s infinite alternate linear";
-        }
     }
 
     function _0xrndPrCl() {
@@ -916,7 +924,6 @@
                 }, 6000);
                 
                 const ed = _0xtextData.endings.win;
-                // 승리 화면 초록색을 하늘색(var(--cyan))으로 변경
                 _0xrnEG(ed.type, ed.result, ed.message, 'var(--cyan)', true, false);
             } else {
                 _0xfailSfx.play().catch(e=>{});
@@ -1010,9 +1017,7 @@
         const overlay = document.getElementById('credit-overlay');
         const content = document.getElementById('credit-content');
         if (!overlay || !content) return;
-        
         const text = _0xtextData.dev_story.join("\n");
-        
         content.innerHTML = `
             <div>${text}</div>
             <img src="귀여운고양이.jpg" onclick="_0xplayNyaBgm()" style="width:67.5vh; height:auto; margin-top:5vh; border-radius:2vh; border:0.4vh solid var(--green); box-shadow: 0 0 2vh var(--green); cursor:pointer;">
@@ -1021,7 +1026,6 @@
         overlay.style.display = 'flex';
         _0xcrdY = window.innerHeight * 0.1;
         _0xcrdSpd = 0.55;
-        
         if (_0xcrdScrInt) clearInterval(_0xcrdScrInt);
         _0xcrdScrInt = setInterval(() => {
             _0xcrdY -= _0xcrdSpd;
