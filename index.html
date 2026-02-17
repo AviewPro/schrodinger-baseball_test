@@ -48,12 +48,10 @@
         #sound-control input[type=range] { -webkit-appearance: slider-vertical; width: 0.8vh; height: 15vh; cursor: pointer; }
         .sound-icon { font-size: 1.5vh; color: var(--cyan); }
 
-        /* 여유공간 조정을 위한 margin 수정 */
         .title-wrapper { position: relative; margin-top: 2vh; margin-bottom: 2vh; z-index: 300; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0; }
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
         .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh 0.5vh 4vh; }
         
-        /* Train Field 글자 색상 애니메이션 추가 */
         .header-subtitle { font-family: 'Orbitron', sans-serif; font-size: 1.8vh; letter-spacing: 0.5vh; opacity: 0.8; margin-top: 0.5vh; margin-bottom: 1.5vh; animation: neonShift 10s infinite alternate linear; }
         
         @keyframes neonShift { 0% { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 2vh var(--cyan); } 100% { color: var(--purple); border-color: var(--purple); box-shadow: 0 0 2vh var(--purple); } }
@@ -373,7 +371,7 @@
                     <div id="chance-val" class="chance-value">--.--%</div>
                 </div>
                 <div class="prob-cat-container">
-                    <div id="turn-counter">8</div>
+                    <div id="turn-counter">6</div>
                     <img id="prob-cat-img" src="귀여운고양이도트4.jpg" class="prob-cat">
                 </div>
             </div>
@@ -407,7 +405,7 @@
 
     const firebaseConfig = { apiKey: "AIzaSyCvxUeqc28cRZ8RL4jpAwtakMxRo5d6zbU", authDomain: "aviewpro.firebaseapp.com", databaseURL: "https://aviewpro-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "aviewpro", storageBucket: "aviewpro.firebasestorage.app", messagingSenderId: "592622610945", appId: "1:592622610945:web:7d56b09e966a4faac62e00", measurementId: "G-NZQ5ZFXG2F" };
 
-    let _0xaiCandidates = [], _0xhistory = [], _0xinputStr = "", _0xturnCount = 8;
+    let _0xaiCandidates = [], _0xhistory = [], _0xinputStr = "", _0xturnCount = 6;
     let _0xisTutorial = false, _0xtutorialStep = 0, _0xcurrentTipType = "";
     let _0xparadoxMusicTriggered = false, _0xalarmTriggered = false, _0xzeroOverlayTriggered = false;
     let _0xcurrentVolume = 0.15;
@@ -508,7 +506,7 @@
     }
 
     function _0xresGm() {
-        _0xaiCandidates = []; _0xhistory = []; _0xinputStr = ""; _0xturnCount = 8; _0xmeowCount = 0;
+        _0xaiCandidates = []; _0xhistory = []; _0xinputStr = ""; _0xturnCount = 6; _0xmeowCount = 0;
         _0xparadoxMusicTriggered = false; _0xalarmTriggered = false; _0xzeroOverlayTriggered = false;
         if(_0xpoisonInterval) { clearInterval(_0xpoisonInterval); _0xpoisonInterval = null; }
         for(let i=0; i<=999; i++){
