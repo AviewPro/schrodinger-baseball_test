@@ -77,7 +77,7 @@
         .setup-box-container { position: relative; width: 35vh; margin-bottom: 2vh; }
         .setup-cat { width: 35vh; height: 35vh; border-radius: 4vh; border: 0.4vh solid var(--green); object-fit: cover; animation: neonShift 10s infinite alternate linear; display: block; }
         
-        .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; animation: neonShiftBg 10s infinite alternate linear; margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; }
+        .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; background: var(--green); color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; box-shadow: 0 0 1.5vh var(--green); margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; order: -1; }
         .setup-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
         .setup-btn:active { transform: scale(0.98); }
 
@@ -119,7 +119,7 @@
 
         .prob-cat-container { position: relative; width: 16vh; height: 16vh; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .prob-cat { width: 100%; height: 100%; border-radius: 2.5vh; border: 0.2vh solid var(--purple); object-fit: cover; box-sizing: border-box; z-index: 1; }
-        #turn-counter { position: absolute; font-weight: 900; font-size: 8vh; z-index: 20; pointer-events: none; transition: transform 2s ease-in-out, color 0.5s; will-change: transform; }
+        #turn-counter { position: absolute; font-weight: 900; font-size: 8vh; z-index: 20; pointer-events: none; transition: transform 2s ease-in-out, color 0.5s; will-change: transform; right: 0; top: 0; padding: 1vh; }
 
         #candidates-box { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .cand-title { font-family: 'Bebas Neue', cursive; font-size: 3vh; color:#fff; margin-bottom: 1.5vh; font-weight:bold; text-align: center; padding: 1vh 0; border-top: 0.1vh solid #333; border-bottom: 0.1vh solid #333; }
@@ -371,7 +371,7 @@
                     <div id="chance-val" class="chance-value">--.--%</div>
                 </div>
                 <div class="prob-cat-container">
-                    <div id="turn-counter">6</div>
+                    <div id="turn-counter">8</div>
                     <img id="prob-cat-img" src="귀여운고양이도트4.jpg" class="prob-cat">
                 </div>
             </div>
@@ -397,46 +397,46 @@
 </div>
 
 <script>
-    // 하드코딩된 데이터
+    // JSON 데이터 하드코딩 통합
     const _0xtextData = {
         "tutorial": {
             "steps": [
-                { "step": 1, "title": "숫자 입력", "desc": "0부터 9까지의 중복되지 않은 <br>세 자리 숫자를 입력하세요." },
-                { "step": 2, "title": "측정 실행", "desc": "ENT를 눌러 현재 입력한 숫자에 대한 <br>양자 상태를 측정합니다." },
-                { "step": 3, "title": "측정 결과", "desc": "S(Strike)는 숫자와 위치가 일치,<br>B(Ball)은 숫자는 포함되나 위치가 다름을 의미합니다." },
-                { "step": 4, "title": "양자 구름", "desc": "Quantum Cloud는 현재 가능성이 남아있는<br>모든 좌표(숫자)들의 집합입니다." },
-                { "step": 5, "title": "관측 시스템", "desc": "가능성이 충분히 좁혀졌다면 OBS를 눌러<br>양자고양이의 확정적 위치를 관측할 수 있습니다." },
-                { "step": 6, "title": "훈련 목표", "desc": "주어진 6턴 안에 측정 결과들을 조합하여<br>양자 구름의 가능성을 0%로 만드세요." }
+                { "step": 1, "title": "숫자 입력", "desc": "0~9 사이의 서로 다른 숫자 3개를 입력하세요." },
+                { "step": 2, "title": "측정 실행 (ENT)", "desc": "ENT 버튼을 눌러 상태를 측정합니다. CLR는 수정을 의미합니다." },
+                { "step": 3, "title": "결과 확인 (S/B)", "desc": "S(Strike)는 숫자와 위치가 일치, B(Ball)는 숫자만 일치함을 의미합니다." },
+                { "step": 4, "title": "양자 구름 (Quantum Cloud)", "desc": "입력 결과에 따라 가능한 모든 숫자의 집합이 업데이트됩니다." },
+                { "step": 5, "title": "관측 (OBS)", "desc": "에너지 레벨(확률)이 충분히 높을 때 OBS를 눌러 정답을 맞추세요." },
+                { "step": 6, "title": "턴 제한", "desc": "싱글 모드는 총 8턴의 기회가 주어집니다. 행운을 빕니다!" }
             ],
             "button_next": "다음",
             "button_finish": "훈련 시작"
         },
         "tips": {
             "success": [
-                { "title": "완벽한 관측", "desc": "당신은 양자역학의 불확정성을 극복했습니다.<br>이 기록을 유지하며 실전 모드에 도전해보세요." },
-                { "title": "효율적인 필터링", "desc": "가장 적은 턴으로 구름을 제거하는 것이<br>고급 관측자의 자질입니다." }
+                { "title": "축하합니다!", "desc": "당신은 양자 고양이의 위치를 정확히 관측했습니다." },
+                { "title": "데이터 분석", "desc": "적은 턴 안에 확률을 100%로 만드는 것이 핵심입니다." }
             ],
             "fail": [
-                { "title": "관측 실패", "desc": "고양이는 상자 속에 없었습니다.<br>측정 결과를 다시 한번 복기해보세요." },
-                { "title": "전략 팁", "desc": "0S 0B(OUT) 결과는 구름을 제거하는 데<br>가장 강력한 단서가 됩니다." }
+                { "title": "관측 실패", "desc": "고양이는 다른 상자로 도망쳤습니다. 확률이 낮을 때 관측은 위험합니다." },
+                { "title": "힌트", "desc": "S와 B의 정보를 조합하여 Quantum Cloud의 후보군을 줄여보세요." }
             ]
         },
         "endings": {
-            "win": { "type": "SUCCESS", "result": "관측 성공!", "message": "축하합니다! 양자고양이의 정확한 위치를 포착했습니다." },
-            "lose": { "type": "FAILED", "result": "관측 실패...", "message": "고양이는 이미 다른 차원으로 이동한 것 같습니다." },
-            "paradox": { "type": "PARADOX", "result": "슈뢰딩거의 역설 통과", "message": "구름이 완전히 소멸되었습니다. 당신은 이미 정답을 알고 있군요." }
+            "win": { "type": "SUCCESS", "result": "관측 성공", "message": "고양이가 상자 안에서 낮잠을 자고 있습니다!" },
+            "lose": { "type": "FAILURE", "result": "관측 실패", "message": "상자는 비어있습니다. 고양이는 중첩 상태로 사라졌습니다." },
+            "paradox": { "type": "PARADOX", "result": "양자 역설 발생", "message": "축하합니다! 당신은 AI를 완전히 무력화시켰습니다. 고양이는 이제 존재하면서도 존재하지 않는 영원한 훈련의 굴레를 벗어났습니다." }
         },
         "dev_story": [
             "Project: Schrödinger Baseball",
-            "Developed with Gemini & Grok",
-            "Created by Aview",
-            "Inspired by Quantum Mechanics"
+            "Directed by: Gemini & Grok",
+            "Idea: Quantum Mechanics + Number Baseball",
+            "Special thanks to the player."
         ]
     };
 
     const firebaseConfig = { apiKey: "AIzaSyCvxUeqc28cRZ8RL4jpAwtakMxRo5d6zbU", authDomain: "aviewpro.firebaseapp.com", databaseURL: "https://aviewpro-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "aviewpro", storageBucket: "aviewpro.firebasestorage.app", messagingSenderId: "592622610945", appId: "1:592622610945:web:7d56b09e966a4faac62e00", measurementId: "G-NZQ5ZFXG2F" };
 
-    let _0xaiCandidates = [], _0xhistory = [], _0xinputStr = "", _0xturnCount = 6;
+    let _0xaiCandidates = [], _0xhistory = [], _0xinputStr = "", _0xturnCount = 8;
     let _0xisTutorial = false, _0xtutorialStep = 0, _0xcurrentTipType = "";
     let _0xparadoxMusicTriggered = false, _0xalarmTriggered = false, _0xzeroOverlayTriggered = false;
     let _0xcurrentVolume = 0.15;
@@ -537,7 +537,7 @@
     }
 
     function _0xresGm() {
-        _0xaiCandidates = []; _0xhistory = []; _0xinputStr = ""; _0xturnCount = 6; _0xmeowCount = 0;
+        _0xaiCandidates = []; _0xhistory = []; _0xinputStr = ""; _0xturnCount = 8; _0xmeowCount = 0;
         _0xparadoxMusicTriggered = false; _0xalarmTriggered = false; _0xzeroOverlayTriggered = false;
         if(_0xpoisonInterval) { clearInterval(_0xpoisonInterval); _0xpoisonInterval = null; }
         for(let i=0; i<=999; i++){
@@ -812,7 +812,7 @@
                 _0xzeroOverlayTriggered = true;
                 _0xstPsL();
             }
-            chanceTitleEl.style.display = 'none';
+            chanceTitleEl.innerText = "Measuring Energy Level";
             chanceBoxEl.style.borderColor = 'var(--green)';
             catImg.style.opacity = '0'; catImg.style.filter = 'blur(2vh)';
             turnCounter.style.color = 'var(--green)'; turnCounter.style.textShadow = '0 0 2vh var(--green)';
@@ -853,7 +853,7 @@
 
             chanceValEl.style.color = currentColor;
             chanceValEl.style.textShadow = currentShadow;
-            chanceTitleEl.style.display = 'block';
+            chanceTitleEl.innerText = "Measuring Energy Level";
             chanceTitleEl.style.color = currentColor;
             chanceTitleEl.style.textShadow = currentShadow;
             chanceValEl.innerText = prob.toFixed(2) + "%";
