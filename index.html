@@ -969,7 +969,7 @@
 
         let subButtons = "";
         if (isParadox) {
-            subButtons = `<button onclick="window.showCredits()" style="font-family: 'Bebas Neue', cursive; width:65vh; padding:2vh 0; margin-top:5vh; background:#222; color:${color}; border:0.4vh solid ${color}; cursor:pointer; font-size:5vh; border-radius:2vh; font-weight:bold; box-shadow: 0 0 2vh ${color}; z-index:100; letter-spacing:0.3vh;">Credits</button>`;
+            subButtons = `<button onclick="localStorage.setItem('totalStartCount', 0); _0xtotalStartCount = 0; window.showCredits()" style="font-family: 'Bebas Neue', cursive; width:65vh; padding:2vh 0; margin-top:5vh; background:#222; color:${color}; border:0.4vh solid ${color}; cursor:pointer; font-size:5vh; border-radius:2vh; font-weight:bold; box-shadow: 0 0 2vh ${color}; z-index:100; letter-spacing:0.3vh;">Credits</button>`;
         } else {
             const tipType = isWin ? 'success' : 'fail';
             subButtons = `
@@ -1044,7 +1044,7 @@
         _0xcrdScrInt = setInterval(() => {
             _0xcrdY -= _0xcrdSpd;
             content.style.transform = `translateY(${_0xcrdY}px)`;
-            if (_0xcrdY < -(content.scrollHeight + 5)) {
+            if (_0xcrdY < -(content.scrollHeight + 25)) {
                 clearInterval(_0xcrdScrInt);
             }
         }, 16);
