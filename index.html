@@ -52,7 +52,6 @@
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
         .header-title { font-size: 5vh; font-weight: bold; letter-spacing: 1.2vh; text-shadow: 0 0 2vh currentColor; animation: neonShift 10s infinite alternate linear; text-align: center; margin: 0; padding: 1vh 4vh 0.5vh 4vh; }
         
-        /* -Training Field- 물리적 위치 조정 (padding-top 추가) */
         .header-subtitle { font-family: 'Orbitron', sans-serif; font-size: 1.8vh; color: var(--cyan); letter-spacing: 0.5vh; opacity: 0.8; margin-top: 0.5vh; margin-bottom: 1.5vh; padding-top: 1.5vh; }
         
         @keyframes neonShift { 0% { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 2vh var(--cyan); } 100% { color: var(--purple); border-color: var(--purple); box-shadow: 0 0 2vh var(--purple); } }
@@ -100,7 +99,6 @@
         .log-sb { font-weight: bold; font-size: 1.8vh; color: var(--purple); margin-top: 0.2vh; }
         .log-out { color: #bc13fe; text-shadow: 0 0 1vh #bc13fe; }
         
-        /* 훈련 통과 문구 세로폭 중앙 정렬 설정 */
         .training-clear-msg { grid-column: span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; position: absolute; top: 0; left: 0; width: 100%; height: 100%; color: var(--green); font-size: 2.2vh; font-weight: bold; text-align: center; text-shadow: 0 0 1vh var(--green); line-height: 1.6; z-index: 10; pointer-events: none; }
         .count-highlight { font-size: 4vh; margin-bottom: 0.5vh; display: block; }
 
@@ -556,6 +554,13 @@
         if (tutOverlay) {
             tutOverlay.style.display = 'flex';
             document.getElementById('tut-esc-guide').style.display = 'none';
+            // 강조 효과 제거 및 투명도 복원
+            document.getElementById('game-box').classList.remove('tutorial-dim');
+            document.getElementById('info-panel').classList.remove('tutorial-dim');
+            document.querySelectorAll('.tutorial-highlight, .tutorial-highlight-turn').forEach(el => {
+                el.classList.remove('tutorial-highlight');
+                el.classList.remove('tutorial-highlight-turn');
+            });
             _0xappTip();
         }
     };
@@ -577,10 +582,13 @@
     function _0xappTip() {
         const title = document.getElementById('tut-title');
         const desc = document.getElementById('tut-desc');
+        const nextBtn = document.getElementById('tut-next-btn');
         if (title && desc) {
             const tip = _0xtextData.tips[_0xcurrentTipType][_0xtutorialStep];
             title.innerText = tip.title;
             desc.innerHTML = tip.desc.replace(/\n/g, "<br>"); 
+            nextBtn.innerText = "확인";
+            nextBtn.classList.remove('btn-cyan');
         }
     }
 
@@ -645,6 +653,7 @@
             if (document.getElementById('credit-overlay')?.style.display === 'flex') { _0xclsCr(); return; }
             if (_0xisTutorial) location.reload();
             if (document.getElementById('obs-overlay')?.style.display === 'flex') { document.getElementById('obs-overlay').style.display = 'none'; }
+            if (document.getElementById('tutorial-overlay')?.style.display === 'flex') { document.getElementById('tutorial-overlay').style.display = 'none'; }
             return;
         }
         if (document.getElementById('obs-overlay')?.style.display === 'flex') {
