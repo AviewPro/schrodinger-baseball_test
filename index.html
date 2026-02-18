@@ -90,15 +90,13 @@
         .setup-cat { width: 35vh; height: 35vh; border-radius: 4vh; border: 0.4vh solid var(--green); object-fit: cover; animation: neonShift 10s infinite alternate linear; display: block; }
         
         .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; animation: neonShiftBg 10s infinite alternate linear; margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; }
-        .setup-btn:hover:not(:disabled) { transform: scale(1.02); filter: brightness(1.2); }
-        .setup-btn:active:not(:disabled) { transform: scale(0.98); }
-        .setup-btn:disabled { opacity: 0.3; cursor: not-allowed; animation: none; background: #333; color: #666; }
+        .setup-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
+        .setup-btn:active { transform: scale(0.98); }
+        .setup-btn:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); animation: none; background: #444; }
 
         .tutorial-btn { font-family: 'Bebas Neue', cursive; width: 35vh; background: #444; color: #fff; font-weight: 700; height: 5vh; font-size: 2.5vh; border-radius: 1.5vh; cursor: pointer; border: 0.2vh solid #666; margin-bottom: 1vh; transition: 0.2s; letter-spacing: 0.1vh; }
         .tutorial-btn:hover { background: #555; transform: scale(1.02); }
-        .tutorial-btn:active { background: #333; transform: scale(0.98); }
-        .tutorial-btn.highlight { border-color: var(--green); box-shadow: 0 0 1.5vh var(--green); animation: blinkGreen 1.5s infinite; }
-        @keyframes blinkGreen { 0%, 100% { border-color: var(--green); box-shadow: 0 0 0.5vh var(--green); } 50% { border-color: #fff; box-shadow: 0 0 2vh var(--green); } }
+        .tutorial-btn:active { transform: scale(0.98); }
 
         .new-keyhole { width: 35vh; height: auto; margin-top: 1.5vh; animation: keyholeNeonShift 10s infinite alternate linear; }
 
@@ -307,33 +305,28 @@
             opacity: 0.9;
         }
 
-        /* Responsive Query */
-        @media screen and (max-width: 1000px) {
-            .title-wrapper { display: none !important; }
+        @media screen and (max-width: 768px) {
             #setup { width: 90vw; }
             #game-box, #info-panel { 
-                width: 100vw !important; 
-                height: 75vh; 
-                min-height: 75vh;
-                margin-left: 0;
-                margin-right: 0;
-                border-radius: 0;
+                width: 90vw; 
+                height: auto; 
+                min-height: 80vh; 
                 flex-shrink: 0;
             }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
+            .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
             .panel-center { width: 90vw; padding: 3vh; }
             
             .game-container > div[style*="flex-wrap: wrap"] {
                 flex-direction: column !important;
                 align-items: center !important;
-                gap: 0 !important;
             }
         }
     </style>
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">0.7 Version</div>
+<div id="version-tag">0.6 Version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -371,8 +364,8 @@
         <div class="setup-box-container">
             <img src="귀여운고양이도트4.jpg" class="setup-cat">
         </div>
-        <button id="tut-start-btn" onclick="_0vHTP()" class="tutorial-btn highlight">How to Play</button>
-        <button id="game-start-btn" onclick="_0vStart()" class="setup-btn" disabled>Start Single Mode</button>
+        <button onclick="_0vHTP()" class="tutorial-btn">How to Play</button>
+        <button id="start-btn" onclick="_0vStart()" class="setup-btn">Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
     </div>
     <div id="setup-footer">
@@ -448,9 +441,6 @@
     let _0vMCnt = 0; 
     let _0vPCnt = 0;
     
-    // Tutorial counter
-    let _0vTutCount = 0;
-
     let _0vBgm = new Audio("002. ErikMMusic - The Dusty Attic.mp3");
     _0vBgm.loop = true;
     _0vBgm.playbackRate = 2.0;
@@ -519,7 +509,6 @@
             _0vClrIn(true);
         }
         if(type === 'ENT') {
-            if(_0vTC <= 0) return;
             _0vSimB('ent-btn');
             _0vPlayS();
             _0vEntCli(true);
@@ -527,7 +516,7 @@
     }
 
     function _0vStart() {
-        if(_0vTutCount === 0) return;
+        if(_0vTC < 1) return; // 턴 카운터가 1 미만이면 실행 방지
         _0vPlayC();
         _0vPCnt++;
         if(_0vFInt) { clearInterval(_0vFInt); _0vFInt = null; }
@@ -575,23 +564,8 @@
 
     function _0vHTP() {
         if(!_0vTData) return;
-        // Increment tutorial counter on 'How to Play' button click
-        _0vTutCount++;
-        
-        const startBtn = document.getElementById('game-start-btn');
-        const tutBtn = document.getElementById('tut-start-btn');
-        if(_0vTutCount > 0) {
-            startBtn.disabled = false;
-            tutBtn.classList.remove('highlight');
-        }
-
         _0vIsTut = true; _0vTType = ""; _0vTStep = 1;
-        document.getElementById('setup').style.display = 'none';
-        document.getElementById('setup-footer').style.display = 'none';
-        document.getElementById('game-box').style.display = 'flex';
-        document.getElementById('info-panel').style.display = 'flex';
-        _0vResGm();
-
+        _0vStart();
         document.getElementById('obs-btn').disabled = true;
         document.getElementById('tutorial-overlay').style.display = 'flex';
         _0vAppTut();
@@ -710,17 +684,14 @@
         }
         if (e.key === '-' || e.key === '_') {
             if (document.getElementById('game-box').style.display === 'flex') {
-                const obsBtn = document.getElementById('obs-btn');
-                if(!obsBtn.disabled) _0vOBS();
+                _0vOBS();
             }
             return;
         }
         if (e.key === 'Enter') {
             e.preventDefault();
             if (document.getElementById('game-box').style.display === 'flex') {
-                if(_0vTC > 0) {
-                    _0vCmd('ENT');
-                }
+                _0vCmd('ENT');
             }
             return;
         }
@@ -806,6 +777,12 @@
     }
 
     function _0vUpUI() {
+        // [최우선 로직] 턴 카운터가 1 이상일 때만 스타트 버튼 활성화
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+            startBtn.disabled = (_0vTC < 1);
+        }
+
         const turnCounter = document.getElementById('turn-counter');
         turnCounter.innerText = _0vTC;
         const prob = _0vAiC.length === 0 ? 0 : (1 / _0vAiC.length * 100);
@@ -817,15 +794,7 @@
         const flashOverlay = document.getElementById('flash-overlay');
         const paradoxOverlay = document.getElementById('paradox-cat-overlay');
         const logWindow = document.getElementById('log-window');
-        const obsBtn = document.getElementById('obs-btn');
         
-        const turnsPlayed = 6 - _0vTC;
-        if(turnsPlayed < 4 && !_0vIsTut) {
-            obsBtn.disabled = true;
-        } else if (!_0vIsTut) {
-            obsBtn.disabled = false;
-        }
-
         if(_0vAiC.length === 0) {
             if(!_0vZeroTrig) {
                 if(_0vBgm) _0vBgm.pause();
@@ -965,8 +934,6 @@
 
     function _0vOBS() {
         if(_0vIsTut || !_0vTData || document.getElementById('game-box').style.display !== 'flex') return;
-        if((6 - _0vTC) < 4) return;
-
         _0vPlayS();
         if(_0vAiC.length === 0) {
             _0vMCnt = 0; 
@@ -1043,7 +1010,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">0.7 Version</div>
+            <div id="version-tag">0.6 Version</div>
             ${emojiLanes}
             ${stampHtml}
             <div id="sound-control" style="z-index:20000;">
@@ -1122,6 +1089,9 @@
             } else { turnCounter.style.transform = `translate(0px, 0px)`; }
         }
     }, 2000);
+
+    // 초기 상태 UI 업데이트 (스타트 버튼 활성화 여부 반영)
+    _0vUpUI();
 </script>
 </body>
 </html>
