@@ -92,7 +92,6 @@
         .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; animation: neonShiftBg 10s infinite alternate linear; margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; }
         .setup-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
         .setup-btn:active { transform: scale(0.98); }
-        .setup-btn:disabled { opacity: 0.3; cursor: not-allowed; animation: none; background: #333; }
 
         .tutorial-btn { font-family: 'Bebas Neue', cursive; width: 35vh; background: #444; color: #fff; font-weight: 700; height: 5vh; font-size: 2.5vh; border-radius: 1.5vh; cursor: pointer; border: 0.2vh solid #666; margin-bottom: 1vh; transition: 0.2s; letter-spacing: 0.1vh; }
         .tutorial-btn:hover { background: #555; transform: scale(1.02); }
@@ -305,15 +304,16 @@
             opacity: 0.9;
         }
 
-        @media screen and (max-width: 1000px) {
-            .title-wrapper { display: none; }
+        @media screen and (max-width: 768px) {
+            #setup { width: 90vw; }
             #game-box, #info-panel { 
-                width: 100vw; 
-                height: 75vh; 
+                width: 90vw; 
+                height: auto; 
+                min-height: 80vh; 
                 flex-shrink: 0;
             }
-            #setup { width: 90vw; }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
+            .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
             .panel-center { width: 90vw; padding: 3vh; }
             
             .game-container > div[style*="flex-wrap: wrap"] {
@@ -325,7 +325,7 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">0.7 Version</div>
+<div id="version-tag">0.6 Version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -363,8 +363,8 @@
         <div class="setup-box-container">
             <img src="귀여운고양이도트4.jpg" class="setup-cat">
         </div>
-        <button id="tut-main-btn" onclick="_0vHTP()" class="tutorial-btn tutorial-highlight">How to Play</button>
-        <button id="start-btn" onclick="_0vStart()" class="setup-btn" disabled>Start Single Mode</button>
+        <button onclick="_0vHTP()" class="tutorial-btn">How to Play</button>
+        <button onclick="_0vStart()" class="setup-btn">Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
     </div>
     <div id="setup-footer">
@@ -379,7 +379,7 @@
             <div class="input-view" id="display">---</div>
             <div class="keypad" id="main-keypad">
                 <button class="key-btn" data-key="7" onclick="_0vNum('7')">7</button><button class="key-btn" data-key="8" onclick="_0vNum('8')">8</button><button class="key-btn" data-key="9" onclick="_0vNum('9')">9</button>
-                <button id="obs-btn" class="btn-obs" onclick="_0vOBS()" disabled>OBS</button>
+                <button id="obs-btn" class="btn-obs" onclick="_0vOBS()">OBS</button>
                 <button class="key-btn" data-key="4" onclick="_0vNum('4')">4</button><button class="key-btn" data-key="5" onclick="_0vNum('5')">5</button><button class="key-btn" data-key="6" onclick="_0vNum('6')">6</button>
                 <button id="clr-btn" class="btn-clr" onclick="_0vCmd('CLR')">CLR</button>
                 <button class="key-btn" data-key="1" onclick="_0vNum('1')">1</button><button class="key-btn" data-key="2" onclick="_0vNum('2')">2</button><button class="key-btn" data-key="3" onclick="_0vNum('3')">3</button>
@@ -439,7 +439,6 @@
     let _0vMInt = null; 
     let _0vMCnt = 0; 
     let _0vPCnt = 0;
-    let _0vTutCnt = 0;
     
     let _0vBgm = new Audio("002. ErikMMusic - The Dusty Attic.mp3");
     _0vBgm.loop = true;
@@ -516,7 +515,6 @@
     }
 
     function _0vStart() {
-        if(_0vTutCnt === 0) return;
         _0vPlayC();
         _0vPCnt++;
         if(_0vFInt) { clearInterval(_0vFInt); _0vFInt = null; }
@@ -555,10 +553,8 @@
         }
         
         const oldPlayCount = _0vPCnt;
-        const oldTutCount = _0vTutCnt;
         document.body.innerHTML = _0vBodyOri;
         _0vPCnt = oldPlayCount;
-        _0vTutCnt = oldTutCount;
         
         _0vVol(document.getElementById('volume-slider')?.value || 0.15);
         _0vStart();
@@ -566,9 +562,6 @@
 
     function _0vHTP() {
         if(!_0vTData) return;
-        _0vTutCnt++;
-        document.getElementById('tut-main-btn').classList.remove('tutorial-highlight');
-        document.getElementById('start-btn').disabled = false;
         _0vIsTut = true; _0vTType = ""; _0vTStep = 1;
         _0vStart();
         document.getElementById('obs-btn').disabled = true;
@@ -688,14 +681,14 @@
             if (e.key === 'Enter') _0vDoObs(); return;
         }
         if (e.key === '-' || e.key === '_') {
-            if (document.getElementById('game-box').style.display === 'flex' && _0vTC <= 2) {
+            if (document.getElementById('game-box').style.display === 'flex') {
                 _0vOBS();
             }
             return;
         }
         if (e.key === 'Enter') {
             e.preventDefault();
-            if (document.getElementById('game-box').style.display === 'flex' && _0vTC > 0) {
+            if (document.getElementById('game-box').style.display === 'flex') {
                 _0vCmd('ENT');
             }
             return;
@@ -793,10 +786,7 @@
         const flashOverlay = document.getElementById('flash-overlay');
         const paradoxOverlay = document.getElementById('paradox-cat-overlay');
         const logWindow = document.getElementById('log-window');
-        const obsBtn = document.getElementById('obs-btn');
         
-        if(_0vTC <= 2) { obsBtn.disabled = false; } else { obsBtn.disabled = true; }
-
         if(_0vAiC.length === 0) {
             if(!_0vZeroTrig) {
                 if(_0vBgm) _0vBgm.pause();
@@ -1012,7 +1002,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">0.7 Version</div>
+            <div id="version-tag">0.6 Version</div>
             ${emojiLanes}
             ${stampHtml}
             <div id="sound-control" style="z-index:20000;">
