@@ -77,12 +77,14 @@
         .setup-cat { width: 35vh; height: 35vh; border-radius: 4vh; border: 0.4vh solid var(--green); object-fit: cover; animation: neonShift 10s infinite alternate linear; display: block; }
         
         .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; animation: neonShiftBg 10s infinite alternate linear; margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; }
-        .setup-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
-        .setup-btn:active { transform: scale(0.98); }
+        .setup-btn:hover:not(:disabled) { transform: scale(1.02); filter: brightness(1.2); }
+        .setup-btn:active:not(:disabled) { transform: scale(0.98); }
+        .setup-btn:disabled { opacity: 0.3; cursor: not-allowed; animation: none; background: #333; color: #666; }
 
         .tutorial-btn { font-family: 'Bebas Neue', cursive; width: 35vh; background: #444; color: #fff; font-weight: 700; height: 5vh; font-size: 2.5vh; border-radius: 1.5vh; cursor: pointer; border: 0.2vh solid #666; margin-bottom: 1vh; transition: 0.2s; letter-spacing: 0.1vh; }
         .tutorial-btn:hover { background: #555; transform: scale(1.02); }
         .tutorial-btn:active { transform: scale(0.98); }
+        .tutorial-btn.highlight-active { animation: neonShift 2s infinite alternate linear; border-width: 0.4vh; box-shadow: 0 0 1.5vh currentColor; }
 
         .new-keyhole { width: 35vh; height: auto; margin-top: 1.5vh; animation: keyholeNeonShift 10s infinite alternate linear; }
 
@@ -281,16 +283,14 @@
 
         @media screen and (max-width: 1000px) {
             .title-wrapper { display: none !important; }
+            #game-box, #info-panel { 
+                width: 100vw !important; 
+                height: 75vh !important; 
+            }
         }
 
         @media screen and (max-width: 768px) {
             #setup { width: 90vw; }
-            #game-box, #info-panel { 
-                width: 90vw; 
-                height: auto; 
-                min-height: 80vh; 
-                flex-shrink: 0;
-            }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
             .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
             .panel-center { width: 90vw; padding: 3vh; }
@@ -304,7 +304,7 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.5 Version</div>
+<div id="version-tag">0.7 Version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -341,8 +341,8 @@
         <div class="setup-box-container">
             <img src="Neon cat.gif" class="setup-cat">
         </div>
-        <button onclick="_0x1d2e()" class="tutorial-btn">How to Play</button>
-        <button onclick="_0x4c5b()" class="setup-btn">Start Single Mode</button>
+        <button id="main-tutorial-btn" onclick="_0x1d2e()" class="tutorial-btn">How to Play</button>
+        <button id="main-start-btn" onclick="_0x4c5b()" class="setup-btn" disabled>Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
     </div>
     <div id="setup-footer">
@@ -357,7 +357,7 @@
             <div class="input-view" id="display">----</div>
             <div class="keypad" id="main-keypad">
                 <button class="key-btn" data-key="7" onclick="_0x9b8a('7')">7</button><button class="key-btn" data-key="8" onclick="_0x9b8a('8')">8</button><button class="key-btn" data-key="9" onclick="_0x9b8a('9')">9</button>
-                <button id="obs-btn" class="btn-obs" onclick="_0x2f1e()">OBS</button>
+                <button id="obs-btn" class="btn-obs" onclick="_0x2f1e()" disabled>OBS</button>
                 <button class="key-btn" data-key="4" onclick="_0x9b8a('4')">4</button><button class="key-btn" data-key="5" onclick="_0x9b8a('5')">5</button><button class="key-btn" data-key="6" onclick="_0x9b8a('6')">6</button>
                 <button id="clr-btn" class="btn-clr" onclick="_0x7c3d('CLR')">CLR</button>
                 <button class="key-btn" data-key="1" onclick="_0x9b8a('1')">1</button><button class="key-btn" data-key="2" onclick="_0x9b8a('2')">2</button><button class="key-btn" data-key="3" onclick="_0x9b8a('3')">3</button>
@@ -403,13 +403,17 @@
     let _0xtextData = null;
     fetch('textdata.json')
         .then(response => response.json())
-        .then(data => { _0xtextData = data; })
+        .then(data => { 
+            _0xtextData = data; 
+            _0xupdateSetupButtons();
+        })
         .catch(error => console.error('Error loading textdata:', error));
 
     const firebaseConfig = { apiKey: "AIzaSyCvxUeqc28cRZ8RL4jpAwtakMxRo5d6zbU", authDomain: "aviewpro.firebaseapp.com", databaseURL: "https://aviewpro-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "aviewpro", storageBucket: "aviewpro.firebasestorage.app", messagingSenderId: "592622610945", appId: "1:592622610945:web:7d56b09e966a4faac62e00", measurementId: "G-NZQ5ZFXG2F" };
 
     let _0xaiCandidates = [], _0xhistory = [], _0xinputStr = "", _0xturnCount = 7;
     let _0xtotalStartCount = parseInt(localStorage.getItem('totalStartCount')) || 0; 
+    let _0xtutorialViewCount = parseInt(localStorage.getItem('tutorialViewCount')) || 0;
     let _0xisTutorial = false, _0xtutorialStep = 0, _0xcurrentTipType = "";
     let _0xparadoxMusicTriggered = false, _0xalarmTriggered = false, _0xzeroOverlayTriggered = false;
     let _0xcurrentVolume = 0.15;
@@ -434,6 +438,18 @@
     const _0xoriginalBodyContent = document.body.innerHTML;
 
     let _0xpoisonInterval = null;
+
+    function _0xupdateSetupButtons() {
+        const startBtn = document.getElementById('main-start-btn');
+        const tutBtn = document.getElementById('main-tutorial-btn');
+        if(_0xtutorialViewCount === 0) {
+            if(startBtn) startBtn.disabled = true;
+            if(tutBtn) tutBtn.classList.add('highlight-active');
+        } else {
+            if(startBtn) startBtn.disabled = false;
+            if(tutBtn) tutBtn.classList.remove('highlight-active');
+        }
+    }
 
     function _0x3f2a(val) { 
         _0xcurrentVolume = parseFloat(val);
@@ -489,6 +505,7 @@
             _0xclrIn(true);
         }
         if(type === 'ENT') {
+            if(_0xturnCount <= 0) return;
             _0xsimBtn('ent-btn');
             _0xplaySpecialClick();
             _0xentCli(true);
@@ -541,6 +558,9 @@
 
     function _0x1d2e() {
         if(!_0xtextData) return;
+        _0xtutorialViewCount++;
+        localStorage.setItem('tutorialViewCount', _0xtutorialViewCount);
+        _0xupdateSetupButtons();
         _0xisTutorial = true; _0xcurrentTipType = ""; _0xtutorialStep = 1;
         _0x4c5b();
         document.getElementById('obs-btn').disabled = true;
@@ -667,7 +687,9 @@
         if (e.key === 'Enter') {
             e.preventDefault();
             if (document.getElementById('game-box').style.display === 'flex') {
-                _0x7c3d('ENT');
+                if(_0xturnCount > 0) {
+                    _0x7c3d('ENT');
+                }
             }
             return;
         }
@@ -925,6 +947,7 @@
 
     function _0x2f1e() {
         if(_0xisTutorial || !_0xtextData) return;
+        if(_0xturnCount > 3) return;
         _0xplaySpecialClick();
         if(_0xaiCandidates.length === 0) {
             _0xmeowCount = 0; 
@@ -991,7 +1014,7 @@
         
         let emojiLanes = "";
         if(isParadox) {
-            const longLane = "🐈 ".repeat(22);
+            const long lane = "🐈 ".repeat(22);
             emojiLanes = `
                 <div class="emoji-lane" style="top:15vh; animation: slide-h 24s linear infinite; animation-delay: -3s;">${longLane}</div>
                 <div class="emoji-lane" style="bottom:15vh; animation: slide-h 29s linear infinite reverse; animation-delay: -7s;">${longLane}</div>
@@ -1016,7 +1039,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.5 Version</div>
+            <div id="version-tag">0.7 Version</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
