@@ -288,11 +288,12 @@
             }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
             
-            /* 모바일 환경 제목 폰트 및 상자 50% 축소 */
-            .title-wrapper { margin-top: 3vh; margin-bottom: 2vh; transform: scale(0.5); transform-origin: center; }
-            .header-title { font-size: 5vh; letter-spacing: 0.6vh; }
-            
-            /* 모바일 디스플레이 가로폭을 입력패널(90vw 기반의 패딩 제외 영역)과 일치 */
+            /* 모바일 제목 폰트 및 박스 크기 50% 축소 */
+            .header-title { font-size: 2.5vh; letter-spacing: 0.6vh; padding: 0.5vh 2vh 0.25vh 2vh; }
+            .header-subtitle { font-size: 0.9vh; letter-spacing: 0.25vh; }
+            .title-bg { border-radius: 0.75vh; }
+
+            /* 모바일 디스플레이 가로폭을 입력패널(keypad) 가로폭과 일치시킴 */
             .input-view { width: 100%; box-sizing: border-box; }
 
             .panel-center { width: 90vw; padding: 3vh; }
@@ -881,7 +882,7 @@
             statusEl.style.textShadow = "0 0 1vh var(--red)";
         } else {
             entBtn.disabled = false;
-            statusEl.innerText = "양자고양이 위치 관측 중...";
+            statusEl.innerText = "고양이 위치 관측 중...";
             statusEl.style.animation = "neonShift 10s infinite alternate linear";
         }
     }
