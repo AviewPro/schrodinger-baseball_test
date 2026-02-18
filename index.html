@@ -280,7 +280,10 @@
         @keyframes slide-v { from { transform: translateY(150vh); } to { transform: translateY(-150%); } }
 
         @media screen and (max-width: 1000px) {
-            .header-title { font-size: 2vh; letter-spacing: 0.5vh; }
+            .title-wrapper { display: none !important; }
+        }
+
+        @media screen and (max-width: 768px) {
             #setup { width: 90vw; }
             #game-box, #info-panel { 
                 width: 90vw; 
@@ -289,6 +292,7 @@
                 flex-shrink: 0;
             }
             .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
+            .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
             .panel-center { width: 90vw; padding: 3vh; }
             
             .game-container > div[style*="flex-wrap: wrap"] {
@@ -300,7 +304,7 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
-<div id="version-tag">1.4 Version</div>
+<div id="version-tag">1.5 Version</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -648,6 +652,14 @@
             if (document.getElementById('obs-overlay')?.style.display === 'flex') { document.getElementById('obs-overlay').style.display = 'none'; }
             return;
         }
+
+        if (e.key === 'Shift') {
+            if (document.querySelector('button[onclick*="_0xresDir()"]')) {
+                _0xresDir();
+                return;
+            }
+        }
+
         if (document.getElementById('obs-overlay')?.style.display === 'flex') {
             if (e.key === 'Enter') _0x6f5a(); return;
         }
@@ -656,6 +668,13 @@
             e.preventDefault();
             if (document.getElementById('game-box').style.display === 'flex') {
                 _0x7c3d('ENT');
+            }
+            return;
+        }
+
+        if (e.key === '-') {
+            if (!document.getElementById('obs-btn').disabled) {
+                _0x2f1e();
             }
             return;
         }
@@ -754,6 +773,7 @@
         const flashOverlay = document.getElementById('flash-overlay');
         const paradoxOverlay = document.getElementById('paradox-cat-overlay');
         const logWin = document.getElementById('log-window');
+        const obsBtn = document.getElementById('obs-btn');
         
         if(_0xaiCandidates.length === 0) {
             logWin.classList.add('paradox-mode');
@@ -872,10 +892,16 @@
             statusEl.style.animation = "none";
             statusEl.style.color = "var(--red)";
             statusEl.style.textShadow = "0 0 1vh var(--red)";
+            obsBtn.disabled = false;
         } else {
             entBtn.disabled = false;
             statusEl.innerText = "양자고양이 위치 관측 중...";
             statusEl.style.animation = "neonShift 10s infinite alternate linear";
+            if (_0xturnCount > 3) {
+                obsBtn.disabled = true;
+            } else {
+                obsBtn.disabled = false;
+            }
         }
     }
 
@@ -943,15 +969,13 @@
                 _0xrnEG(ed.type, ed.result, ed.message, 'var(--cyan)', true, false);
             } else {
                 if(_0xfailLoopInterval) { clearInterval(_0xfailLoopInterval); _0xfailLoopInterval = null; }
-                setTimeout(() => {
-                    if(!document.getElementById('obs-overlay')) return; 
+                
+                _0xfailSfx.currentTime = 0;
+                _0xfailSfx.play().catch(e=>{});
+                _0xfailLoopInterval = setInterval(() => {
                     _0xfailSfx.currentTime = 0;
                     _0xfailSfx.play().catch(e=>{});
-                    _0xfailLoopInterval = setInterval(() => {
-                        _0xfailSfx.currentTime = 0;
-                        _0xfailSfx.play().catch(e=>{});
-                    }, 6000);
-                }, 5000);
+                }, 6000);
                 
                 const ed = _0xtextData.endings.lose;
                 _0xrnEG(ed.type, ed.result, ed.message, 'var(--red)', false, false);
@@ -992,7 +1016,7 @@
         }
 
         document.body.innerHTML = `
-            <div id="version-tag">1.4 Version</div>
+            <div id="version-tag">1.5 Version</div>
             ${emojiLanes}
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
