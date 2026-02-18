@@ -92,7 +92,6 @@
         .setup-btn { font-family: 'Bebas Neue', cursive; width: 35vh; color: #000; font-weight: 900; height: 7vh; font-size: 3.2vh; border-radius: 1.5vh; cursor: pointer; border: none; animation: neonShiftBg 10s infinite alternate linear; margin-top: 1vh; transition: transform 0.1s, filter 0.2s; letter-spacing: 0.1vh; }
         .setup-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
         .setup-btn:active { transform: scale(0.98); }
-        .setup-btn:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); animation: none; background: #444; }
 
         .tutorial-btn { font-family: 'Bebas Neue', cursive; width: 35vh; background: #444; color: #fff; font-weight: 700; height: 5vh; font-size: 2.5vh; border-radius: 1.5vh; cursor: pointer; border: 0.2vh solid #666; margin-bottom: 1vh; transition: 0.2s; letter-spacing: 0.1vh; }
         .tutorial-btn:hover { background: #555; transform: scale(1.02); }
@@ -365,7 +364,7 @@
             <img src="귀여운고양이도트4.jpg" class="setup-cat">
         </div>
         <button onclick="_0vHTP()" class="tutorial-btn">How to Play</button>
-        <button id="start-btn" onclick="_0vStart()" class="setup-btn">Start Single Mode</button>
+        <button id="start-btn" onclick="_0vStart()" class="setup-btn" disabled>Start Single Mode</button>
         <img src="Aview.png" class="new-keyhole">
     </div>
     <div id="setup-footer">
@@ -516,7 +515,6 @@
     }
 
     function _0vStart() {
-        if(_0vTC < 1) return; // 턴 카운터가 1 미만이면 실행 방지
         _0vPlayC();
         _0vPCnt++;
         if(_0vFInt) { clearInterval(_0vFInt); _0vFInt = null; }
@@ -625,7 +623,17 @@
         const nextBtn = document.getElementById('tut-next-btn');
         const turnCounter = document.getElementById('turn-counter');
         const chanceBox = document.getElementById('chance-box');
+        const startBtn = document.getElementById('start-btn');
         
+        // 최우선 로직: 튜토리얼 단계가 1 이상이면 스타트 버튼 활성화
+        if (startBtn) {
+            if (_0vTStep >= 1) {
+                startBtn.disabled = false;
+            } else {
+                startBtn.disabled = true;
+            }
+        }
+
         document.getElementById('game-box').classList.add('tutorial-dim');
         document.getElementById('info-panel').classList.add('tutorial-dim');
         document.querySelectorAll('.key-btn, #ent-btn, #clr-btn, #obs-btn, #display, #log-window, #candidates-box, #chance-area, #zero-btn, .log-item, #chance-box').forEach(el => el.classList.remove('tutorial-highlight'));
@@ -777,12 +785,6 @@
     }
 
     function _0vUpUI() {
-        // [최우선 로직] 턴 카운터가 1 이상일 때만 스타트 버튼 활성화
-        const startBtn = document.getElementById('start-btn');
-        if (startBtn) {
-            startBtn.disabled = (_0vTC < 1);
-        }
-
         const turnCounter = document.getElementById('turn-counter');
         turnCounter.innerText = _0vTC;
         const prob = _0vAiC.length === 0 ? 0 : (1 / _0vAiC.length * 100);
@@ -1089,9 +1091,6 @@
             } else { turnCounter.style.transform = `translate(0px, 0px)`; }
         }
     }, 2000);
-
-    // 초기 상태 UI 업데이트 (스타트 버튼 활성화 여부 반영)
-    _0vUpUI();
 </script>
 </body>
 </html>
