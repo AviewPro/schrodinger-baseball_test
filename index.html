@@ -652,19 +652,6 @@
             if (document.getElementById('obs-overlay')?.style.display === 'flex') { document.getElementById('obs-overlay').style.display = 'none'; }
             return;
         }
-        
-        if (e.key === 'Shift') {
-            _0xresDir();
-            return;
-        }
-
-        if (e.key === '-') {
-            if (document.getElementById('game-box').style.display === 'flex') {
-                _0x2f1e();
-            }
-            return;
-        }
-
         if (document.getElementById('obs-overlay')?.style.display === 'flex') {
             if (e.key === 'Enter') _0x6f5a(); return;
         }
@@ -1095,7 +1082,7 @@
         const turnCounter = document.getElementById('turn-counter');
         if(turnCounter) {
             if (_0xturnCount > 0) {
-                const intensity = 40; 
+                const intensity = 25; 
                 const tMoveX = (Math.random()-0.5) * intensity;
                 const tMoveY = (Math.random()-0.5) * intensity;
                 turnCounter.style.transform = `translate(${tMoveX}px, ${tMoveY}px)`;
