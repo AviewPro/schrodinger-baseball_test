@@ -34,11 +34,11 @@
             min-height: 100vh;
             margin: 0; 
             padding: 0;
-            /* 터치 최적화 및 텍스트 선택 방지 */
+            /* 텍스트 선택 방지 유지, 스크롤은 허용 */
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none; 
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         /* 터치 반응성 및 하이라이트 제거 */
@@ -74,11 +74,17 @@
             border-radius: 1vh;
             border: none;
             z-index: 1000;
+            display: none; /* 화면에서 보이지 않도록 수정 */
         }
         
         #sound-control { position: fixed; right: 2vh; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 1vh; background: rgba(0,0,0,0.7); padding: 1.5vh 1vh; border-radius: 3vh; border: 0.1vh solid var(--cyan); z-index: 10000; }
         #sound-control input[type=range] { -webkit-appearance: slider-vertical; width: 0.8vh; height: 15vh; cursor: pointer; }
         .sound-icon { font-size: 1.5vh; color: var(--cyan); }
+
+        /* 모바일에서 음량 조절바 숨기기 */
+        @media screen and (max-width: 768px) {
+            #sound-control { display: none !important; }
+        }
 
         .title-wrapper { position: relative; margin-top: 2vh; margin-bottom: 2vh; z-index: 300; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0; }
         .title-bg { position: absolute; background: rgba(0, 0, 0, 0.7); width: 120%; height: 120%; border-radius: 1.5vh; filter: blur(0.5vh); z-index: -1; }
@@ -361,7 +367,7 @@
 <body oncontextmenu="return false" oncopy="return false" oncut="return false">
 
 <div id="version-tag">0.7 Version</div>
-<div id="how-counter">HOW버튼 카운터: 0</div>
+<div id="how-counter">0</div>
 <div id="flash-overlay"></div>
 
 <div id="sound-control">
@@ -465,7 +471,7 @@
         return false;
     };
 
-    // 2. 화면 스크롤/바운스 및 핀치 줌 방지
+    // 2. 핀치 줌 방지 (스크롤은 허용되도록 수정됨)
     document.addEventListener('touchmove', function(e) {
         if (e.scale !== 1) { e.preventDefault(); }
     }, { passive: false });
@@ -513,7 +519,7 @@
         _0vVol(0.15);
         const counterEl = document.getElementById('how-counter');
         const startBtn = document.getElementById('start-btn');
-        if(counterEl) counterEl.innerText = "HOW버튼 카운터: " + _0vHowCnt;
+        if(counterEl) counterEl.innerText = _0vHowCnt;
         if(startBtn && _0vHowCnt >= 1) startBtn.disabled = false;
     };
 
@@ -620,7 +626,7 @@
         // 상태 복구
         const counterEl = document.getElementById('how-counter');
         const startBtn = document.getElementById('start-btn');
-        if(counterEl) counterEl.innerText = "HOW버튼 카운터: " + _0vHowCnt;
+        if(counterEl) counterEl.innerText = _0vHowCnt;
         if(startBtn && _0vHowCnt >= 1) startBtn.disabled = false;
         _0vStart();
     }
@@ -631,7 +637,7 @@
         localStorage.setItem('sb_how_count', _0vHowCnt);
         
         const counterEl = document.getElementById('how-counter');
-        if(counterEl) counterEl.innerText = "HOW버튼 카운터: " + _0vHowCnt;
+        if(counterEl) counterEl.innerText = _0vHowCnt;
         
         const startBtn = document.getElementById('start-btn');
         if(_0vHowCnt >= 1 && startBtn) {
