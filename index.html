@@ -32,7 +32,7 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            overflow-y: auto; /* 세로 스크롤 허용 */
+            overflow-y: auto;
         }
 
         #version-tag {
@@ -50,7 +50,6 @@
         #sound-control input[type=range] { -webkit-appearance: slider-vertical; width: 0.8vh; height: 15vh; cursor: pointer; }
         .sound-icon { font-size: 1.5vh; color: var(--cyan); }
 
-        /* 튜토리얼 버튼 클릭 카운터 리셋 버튼 스타일 */
         #test-reset-btn {
             position: fixed;
             right: 2vh;
@@ -67,10 +66,10 @@
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
+            display: none;
         }
         #test-reset-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 2vh var(--red); }
 
-        /* 튜토리얼 카운터 리셋 버튼 스타일 */
         #tut-reset-btn {
             position: fixed;
             right: 18vh;
@@ -87,6 +86,7 @@
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
+            display: none;
         }
         #tut-reset-btn:hover { background: var(--cyan); color: #000; box-shadow: 0 0 2vh var(--cyan); }
 
@@ -126,7 +126,6 @@
         .tutorial-btn:hover { background: #555; transform: scale(1.02); }
         .tutorial-btn:active { transform: scale(0.98); }
         
-        /* 튜토리얼 안 봤을 때 하우투플레이 버튼 강조 스타일 */
         .tutorial-btn.highlight {
             border: 0.3vh solid var(--green);
             box-shadow: 0 0 1.5vh var(--green);
@@ -338,8 +337,7 @@
         }
 
         @media screen and (max-width: 768px) {
-            #sound-control { display: none !important; } /* 모바일에서 음량 조절 숨김 */
-            #test-reset-btn { top: 1vh; right: 1vh; padding: 0.8vh 1.2vh; font-size: 1.2vh; }
+            #sound-control { display: none !important; }
             #setup { width: 90vw; }
             #game-box, #info-panel { 
                 width: 90vw; 
@@ -492,15 +490,12 @@
     const _0xlightsOffSfx = new Audio("소등.mp3");
 
     const _0xoriginalBodyContent = document.body.innerHTML;
-
     let _0xpoisonInterval = null;
 
-    // 튜토리얼 완료 여부에 따른 메인 버튼 상태 제어 함수
     function _0xcheckTutorialStatus() {
         const startBtn = document.getElementById('main-start-btn');
         const tutorialBtn = document.getElementById('main-tutorial-btn');
         if(!startBtn || !tutorialBtn) return;
-
         if(_0xtutorialClickCount <= 0) {
             startBtn.disabled = true;
             tutorialBtn.classList.add('highlight');
@@ -729,18 +724,15 @@
             if (document.getElementById('obs-overlay')?.style.display === 'flex') { document.getElementById('obs-overlay').style.display = 'none'; }
             return;
         }
-
         if (e.key === 'Shift') {
             if (document.querySelector('button[onclick*="_0xresDir()"]')) {
                 _0xresDir();
                 return;
             }
         }
-
         if (document.getElementById('obs-overlay')?.style.display === 'flex') {
             if (e.key === 'Enter') _0x6f5a(); return;
         }
-        
         if (e.key === 'Enter') {
             e.preventDefault();
             if (document.getElementById('game-box').style.display === 'flex') {
@@ -748,21 +740,18 @@
             }
             return;
         }
-
         if (e.key === '-') {
             if (!document.getElementById('obs-btn').disabled) {
                 _0x2f1e();
             }
             return;
         }
-        
         if (e.key === '0' || (e.key >= '1' && e.key <= '9')) {
             const btn = document.querySelector(e.key === '0' ? '#zero-btn' : `.key-btn[data-key="${e.key}"]`);
             if(btn) { btn.classList.add('active'); setTimeout(() => btn.classList.remove('active'), 100); }
             _0x9b8a(e.key);
             return;
         }
-        
         if (e.key === 'Delete' || e.key === 'Backspace') {
             _0x7c3d('CLR');
             return;
@@ -824,7 +813,6 @@
         const el = document.getElementById('chance-val');
         let index = targetText.length;
         let isDeleting = true;
-
         _0xpoisonInterval = setInterval(() => {
             if (isDeleting) {
                 el.innerHTML = `<span class="poison-text" style="color:var(--green); text-shadow: 0 0 1.5vh var(--green);">${targetText.substring(0, index)}</span>`;
@@ -851,14 +839,12 @@
         const paradoxOverlay = document.getElementById('paradox-cat-overlay');
         const logWin = document.getElementById('log-window');
         const obsBtn = document.getElementById('obs-btn');
-        
         if(_0xaiCandidates.length === 0) {
             logWin.classList.add('paradox-mode');
             logWin.innerHTML = `
                 <div class="paradox-count">${_0xtotalStartCount}회</div>
                 <div class="paradox-msg">시도 끝에 패러독스를 찾으셨습니다.<br>축하합니다!</div>
             `;
-
             if(!_0xparadoxMusicTriggered) {
                 _0xbgm.pause();
                 setTimeout(() => {
@@ -872,22 +858,18 @@
             if(!_0xzeroOverlayTriggered) {
                 _0xlightsOffSfx.currentTime = 0;
                 _0xlightsOffSfx.play().catch(e=>{});
-
                 flashOverlay.style.transition = 'none';
                 flashOverlay.style.background = '#000';
                 flashOverlay.style.opacity = '1';
-                
                 setTimeout(() => { 
                     flashOverlay.style.transition = 'opacity 1.5s ease';
                     flashOverlay.style.opacity = '0'; 
                 }, 3000);
-                
                 if(paradoxOverlay) {
                     paradoxOverlay.style.display = 'block';
                     paradoxOverlay.style.opacity = '1';
                     paradoxOverlay.style.animation = "fadeOutLong 16s forwards";
                 }
-
                 _0xzeroOverlayTriggered = true;
                 _0xstPsL();
             }
@@ -900,10 +882,8 @@
             deadX.style.display = 'none';
             if(paradoxOverlay) { paradoxOverlay.style.display = 'none'; paradoxOverlay.style.animation = 'none'; }
             if(_0xpoisonInterval) { clearInterval(_0xpoisonInterval); _0xpoisonInterval = null; }
-
             let currentColor = 'var(--purple)';
             let currentShadow = '0 0 2.5vh var(--purple)';
-
             if (prob === 100) {
                 currentColor = 'var(--red)';
                 currentShadow = '0 0 2.5vh var(--red)';
@@ -922,14 +902,11 @@
             } else {
                 _0xalarmTriggered = false;
             }
-
             chanceValEl.style.color = currentColor;
             chanceValEl.style.textShadow = currentShadow;
-            
             chanceTitleEl.style.display = 'block';
             chanceTitleEl.style.color = currentColor;
             chanceTitleEl.style.textShadow = currentShadow;
-            
             chanceValEl.innerText = prob.toFixed(2) + "%";
             chanceBoxEl.style.borderColor = currentColor;
             turnCounter.style.color = currentColor;
@@ -938,29 +915,19 @@
             catImg.style.display = 'block'; catImg.style.opacity = opacityAmount;
             catImg.style.filter = `blur(${blurAmount}vh)`; 
             catImg.style.borderColor = currentColor;
-
             logWin.innerHTML = _0xhistory.map(h => {
                 const resultText = (h.s === 0 && h.b === 0) ? `<span class="log-out">OUT</span>` : `${h.s}S / ${h.b}B`;
                 return `<div class="log-item"><span class="log-n">${h.n}</span><span class="log-sb">${resultText}</span></div>`;
             }).join('');
             logWin.scrollTop = logWin.scrollHeight;
         }
-        
         const slice = [..._0xaiCandidates].sort(() => 0.5 - Math.random()).slice(0, 100);
-        
         let pixelateStrength = 0;
-        if (prob >= 25) {
-            pixelateStrength = 0; 
-        } else if (prob >= 5) {
-            pixelateStrength = 0.05; 
-        } else if (prob >= 1) {
-            pixelateStrength = 0.15; 
-        } else {
-            pixelateStrength = 0.25; 
-        }
-
+        if (prob >= 25) { pixelateStrength = 0; }
+        else if (prob >= 5) { pixelateStrength = 0.05; }
+        else if (prob >= 1) { pixelateStrength = 0.15; }
+        else { pixelateStrength = 0.25; }
         document.getElementById('cand-list').innerHTML = slice.map(c => `<div class="cand-item" style="filter: blur(${pixelateStrength}vh) contrast(180%);">${c}</div>`).join('');
-
         const statusEl = document.getElementById('status');
         const entBtn = document.getElementById('ent-btn');
         if(_0xturnCount <= 0) {
@@ -974,11 +941,8 @@
             entBtn.disabled = false;
             statusEl.innerText = "양자고양이 위치 관측 중...";
             statusEl.style.animation = "neonShift 10s infinite alternate linear";
-            if (_0xturnCount > 3) {
-                obsBtn.disabled = true;
-            } else {
-                obsBtn.disabled = false;
-            }
+            if (_0xturnCount > 3) { obsBtn.disabled = true; }
+            else { obsBtn.disabled = false; }
         }
     }
 
@@ -1017,7 +981,6 @@
                     clearInterval(_0xmeowLoopInterval);
                 }
             }, 6000);
-
             const ed = _0xtextData.endings.paradox;
             _0xrnEG(ed.type, ed.result, ed.message, 'var(--green)', true, true);
             return;
@@ -1033,7 +996,6 @@
             _0xplayClick();
             let realSecret = _0xaiCandidates[Math.floor(Math.random() * _0xaiCandidates.length)];
             const prob = 1 / _0xaiCandidates.length * 100;
-            
             if(guess === realSecret && prob === 100) {
                 _0xsuccessSfx.play().catch(e=>{});
                 if(_0xsuccessLoopInterval) clearInterval(_0xsuccessLoopInterval);
@@ -1041,19 +1003,16 @@
                     _0xsuccessSfx.currentTime = 0;
                     _0xsuccessSfx.play().catch(e=>{});
                 }, 6000);
-                
                 const ed = _0xtextData.endings.win;
                 _0xrnEG(ed.type, ed.result, ed.message, 'var(--cyan)', true, false);
             } else {
                 if(_0xfailLoopInterval) { clearInterval(_0xfailLoopInterval); _0xfailLoopInterval = null; }
-                
                 _0xfailSfx.currentTime = 0;
                 _0xfailSfx.play().catch(e=>{});
                 _0xfailLoopInterval = setInterval(() => {
                     _0xfailSfx.currentTime = 0;
                     _0xfailSfx.play().catch(e=>{});
                 }, 6000);
-                
                 const ed = _0xtextData.endings.lose;
                 _0xrnEG(ed.type, ed.result, ed.message, 'var(--red)', false, false);
             }
@@ -1065,7 +1024,6 @@
         const paradoxGif = "Neon cat 2.gif";
         const loseImg = "box.gif";
         let mediaUrl = isParadox ? paradoxGif : (isWin ? winGif : loseImg);
-        
         let emojiLanes = "";
         if(isParadox) {
             const longLane = "🐈 ".repeat(22);
@@ -1076,7 +1034,6 @@
                 <div class="emoji-lane" style="right:10vw; animation: slide-v 26s linear infinite reverse; animation-delay: -1s;">${longLane.split(' ').join('<br>')}</div>
             `;
         }
-
         let subButtons = "";
         if (isParadox) {
             subButtons = `<button onclick="localStorage.setItem('totalStartCount', 0); _0xtotalStartCount = 0; window.showCredits()" style="font-family: 'Bebas Neue', cursive; width:65vh; padding:2vh 0; margin-top:5vh; background:#222; color:${color}; border:0.4vh solid ${color}; cursor:pointer; font-size:5vh; border-radius:2vh; font-weight:bold; box-shadow: 0 0 2vh ${color}; z-index:100; letter-spacing:0.3vh;">Credits</button>`;
@@ -1091,12 +1048,9 @@
                     </div>
                 </div>`;
         }
-
         document.body.innerHTML = `
             <div id="version-tag">1.5 Version</div>
             ${emojiLanes}
-            <button id="test-reset-btn" onclick="localStorage.setItem('totalStartCount', 0); location.reload();">Reset Counter</button>
-            <button id="tut-reset-btn" onclick="localStorage.setItem('tutorialClickCount', 0); location.reload();">Tutorial Reset</button>
             <div id="sound-control" style="z-index:20000;">
                 <span class="sound-icon">♪</span>
                 <input type="range" id="volume-slider-end" min="0" max="1" step="0.01" value="${_0xcurrentVolume}" oninput="_0x3f2a(this.value)">
@@ -1125,24 +1079,18 @@
                 <p style="color:${isParadox ? color : '#aaa'}; font-size:2.2vh; max-width:80vh; line-height:1.4; margin: 1vh 0;">${msg}</p>
                 ${subButtons}
             </div>`;
-            
-        document.getElementById('volume-slider-end').addEventListener('input', (e) => {
-            _0x3f2a(e.target.value);
-        });
+        document.getElementById('volume-slider-end').addEventListener('input', (e) => { _0x3f2a(e.target.value); });
     }
 
     let _0xcrdScrInt = null;
     let _0xcrdY = 0;
     let _0xcrdSpd = 0.55;
-
     window.showCredits = function() {
         if(!_0xtextData) return;
         const overlay = document.getElementById('credit-overlay');
         const content = document.getElementById('credit-content');
         if (!overlay || !content) return;
-        
         const text = _0xtextData.dev_story.join("\n");
-        
         content.innerHTML = `
             <div>${text}</div>
             <img src="귀여운고양이.jpg" onclick="_0xplayNyaBgm()" style="width:67.5vh; height:auto; margin-top:5vh; border-radius:2vh; border:0.4vh solid var(--green); box-shadow: 0 0 2vh var(--green); cursor:pointer;">
@@ -1151,17 +1099,13 @@
         overlay.style.display = 'flex';
         _0xcrdY = window.innerHeight * 0.1;
         _0xcrdSpd = 0.55;
-        
         if (_0xcrdScrInt) clearInterval(_0xcrdScrInt);
         _0xcrdScrInt = setInterval(() => {
             _0xcrdY -= _0xcrdSpd;
             content.style.transform = `translateY(${_0xcrdY}px)`;
-            if (_0xcrdY < -(content.scrollHeight + 25)) {
-                clearInterval(_0xcrdScrInt);
-            }
+            if (_0xcrdY < -(content.scrollHeight + 25)) { clearInterval(_0xcrdScrInt); }
         }, 16);
     };
-
     window._0x8c21 = function(e) { if(e) e.stopPropagation(); _0xcrdSpd = 4.5; };
     window._0x7d4e = function(e) { if(e) e.stopPropagation(); _0xcrdSpd = 0.55; };
     window._0xclsCr = function() {
@@ -1171,7 +1115,6 @@
             if (_0xcrdScrInt) clearInterval(_0xcrdScrInt);
         }
     };
-
     setInterval(() => {
         document.querySelectorAll('.cand-item').forEach(item => {
             const moveX = (Math.random()-0.5)*1.5; const moveY = (Math.random()-0.5)*1.5;
