@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Schrödinger Baseball - Single Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <link rel="icon" type="image/jpeg" href="귀여운고양이도트4.jpg">
     <link rel="shortcut icon" href="귀여운고양이도트4.jpg">
     
@@ -32,8 +34,21 @@
             min-height: 100vh;
             margin: 0; 
             padding: 0;
+            /* 터치 최적화 및 텍스트 선택 방지 */
             user-select: none;
             -webkit-user-select: none;
+            touch-action: none; 
+            overflow: hidden;
+        }
+
+        /* 터치 반응성 및 하이라이트 제거 */
+        canvas, button, .game-element {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            touch-action: manipulation;
         }
 
         #version-tag {
@@ -443,6 +458,18 @@
 </div>
 
 <script>
+    // 1. 길게 눌렀을 때 나타나는 컨텍스트 메뉴 방지 (전역 적용)
+    window.oncontextmenu = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    };
+
+    // 2. 화면 스크롤/바운스 및 핀치 줌 방지
+    document.addEventListener('touchmove', function(e) {
+        if (e.scale !== 1) { e.preventDefault(); }
+    }, { passive: false });
+
     let _0vTData = null;
     fetch('textdata.json')
         .then(response => response.json())
