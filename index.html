@@ -74,28 +74,10 @@
             border-radius: 1vh;
             border: none;
             z-index: 1000;
-            display: none; /* 화면에서 보이지 않도록 수정 */
+            display: none; 
         }
         
-        #test-reset-btn {
-            position: fixed;
-            right: 2vh;
-            top: 60%;
-            transform: translateY(-50%);
-            background: rgba(255, 75, 43, 0.3);
-            color: var(--red);
-            border: 0.1vh solid var(--red);
-            padding: 1vh;
-            font-family: 'Bebas Neue', cursive;
-            font-size: 1.5vh;
-            border-radius: 0.5vh;
-            cursor: pointer;
-            z-index: 10001;
-            transition: 0.2s;
-        }
-        #test-reset-btn:hover { background: var(--red); color: #000; }
-
-        #sound-control { position: fixed; right: 2vh; top: 40%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 1vh; background: rgba(0,0,0,0.7); padding: 1.5vh 1vh; border-radius: 3vh; border: 0.1vh solid var(--cyan); z-index: 10000; }
+        #sound-control { position: fixed; right: 2vh; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 1vh; background: rgba(0,0,0,0.7); padding: 1.5vh 1vh; border-radius: 3vh; border: 0.1vh solid var(--cyan); z-index: 10000; }
         #sound-control input[type=range] { -webkit-appearance: slider-vertical; width: 0.8vh; height: 15vh; cursor: pointer; }
         .sound-icon { font-size: 1.5vh; color: var(--cyan); }
 
@@ -153,7 +135,18 @@
 
         .new-keyhole { width: 35vh; height: auto; margin-top: 1.5vh; animation: keyholeNeonShift 10s infinite alternate linear; }
 
-        #game-box, #info-panel { width: 50vh; height: 75vh; padding: 2.5vh; border-radius: 2.5vh; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; margin-bottom: 3vh; }
+        /* 패널 세로폭을 충분히 확보하여 세로 배치를 강제하고 스크롤 가능하게 수정 */
+        #game-box, #info-panel { 
+            width: 50vh; 
+            min-height: 85vh; /* 세로 공간을 최대한 늘림 */
+            padding: 2.5vh; 
+            border-radius: 2.5vh; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0; 
+            margin-bottom: 5vh; /* 패널 사이 간격 확보 */
+        }
         #game-box { background: rgba(17, 17, 17, 0.9); border: 0.1vh solid #333; position: relative; display: none; }
         #info-panel { background: rgba(10, 10, 15, 0.9); border: 0.1vh solid #333; display: none; position: relative; }
         
@@ -365,32 +358,18 @@
         }
 
         @media screen and (max-width: 768px) {
-            body { justify-content: center; }
-            .game-container { 
-                height: 100vh; 
-                width: 100vw; 
-                padding-bottom: 0; 
-                justify-content: flex-start;
-                overflow-y: auto;
-            }
-            #setup { width: 95vw; max-height: 90vh; }
+            #setup { width: 90vw; }
             #game-box, #info-panel { 
-                width: 100vw !important;
-                height: auto; 
-                min-height: 85vh; 
+                min-height: 90vh; /* 모바일에서 더 넉넉하게 세로폭 확보 */
                 flex-shrink: 0;
-                margin-bottom: 0;
-                padding-bottom: 5vh;
             }
-            .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 85vw; }
-            .setup-cat { height: 85vw; }
+            .setup-cat, .setup-btn, .tutorial-btn, .setup-box-container { width: 80vw; }
             .header-title { font-size: 4vh; letter-spacing: 0.5vh; }
-            .panel-center { width: 95vw; padding: 3vh; }
+            .panel-center { width: 90vw; padding: 3vh; }
             
             .game-container > div[style*="flex-wrap: wrap"] {
                 flex-direction: column !important;
                 align-items: center !important;
-                width: 100% !important;
             }
         }
     </style>
@@ -400,8 +379,6 @@
 <div id="version-tag">0.7 Version</div>
 <div id="how-counter">0</div>
 <div id="flash-overlay"></div>
-
-<button id="test-reset-btn" onclick="_0vTestReset()">RESET COUNT</button>
 
 <div id="sound-control">
     <span class="sound-icon">♪</span>
@@ -504,7 +481,7 @@
         return false;
     };
 
-    // 2. 핀치 줌 방지
+    // 2. 핀치 줌 방지 (스크롤은 허용되도록 수정됨)
     document.addEventListener('touchmove', function(e) {
         if (e.scale !== 1) { e.preventDefault(); }
     }, { passive: false });
@@ -554,22 +531,7 @@
         const startBtn = document.getElementById('start-btn');
         if(counterEl) counterEl.innerText = _0vHowCnt;
         if(startBtn && _0vHowCnt >= 1) startBtn.disabled = false;
-        
-        // 테스트 버튼 가시성
-        const testBtn = document.getElementById('test-reset-btn');
-        if(_0vHowCnt < 1 && testBtn) testBtn.style.display = 'none';
     };
-
-    function _0vTestReset() {
-        _0vHowCnt = 0;
-        localStorage.setItem('sb_how_count', _0vHowCnt);
-        const counterEl = document.getElementById('how-counter');
-        if(counterEl) counterEl.innerText = _0vHowCnt;
-        const startBtn = document.getElementById('start-btn');
-        if(startBtn) startBtn.disabled = true;
-        document.getElementById('test-reset-btn').style.display = 'none';
-        _0vPlayS();
-    }
 
     function _0vVol(val) { 
         _0vCurVol = parseFloat(val);
@@ -638,7 +600,6 @@
         document.getElementById('game-box').style.display = 'flex';
         document.getElementById('info-panel').style.display = 'flex';
         document.getElementById('how-counter').style.display = 'none';
-        document.getElementById('test-reset-btn').style.display = 'none';
         _0vResGm();
     }
 
@@ -692,9 +653,6 @@
         if(_0vHowCnt >= 1 && startBtn) {
             startBtn.disabled = false;
         }
-        
-        const testBtn = document.getElementById('test-reset-btn');
-        if(testBtn) testBtn.style.display = 'block';
 
         if(!_0vTData) return;
         _0vIsTut = true; _0vTType = ""; _0vTStep = 1;
