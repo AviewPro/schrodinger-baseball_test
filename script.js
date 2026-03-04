@@ -2,38 +2,38 @@ const _c = document.getElementById('gc');
 const _x = _c.getContext('2d');
 const _HM = [
     "저의 두번째 게임 Start to Press Any Button을 즐겨주셔서 감사합니다.",
-    "",
-    "이 게임을 2번이나 클리어하다니 부디 즐거우셨길 바랍니다.",
-    "",
-    "항아리류 똥겜의 이미지를 생각하며 만든 게임이라 고단한 길이였다면 정상입니다.",
-    "",
-    "느끼셨겠지만 제목은 많은 고전게임에서 자주 보였던 문구인",
+    "", "이 게임을 2번이나 클리어하다니 부디 즐거우셨길 바랍니다.",
+    "", "항아리류 똥겜의 이미지를 생각하며 만든 게임이라 고단한 길이였다면 정상입니다.",
+    "", "느끼셨겠지만 제목은 많은 고전게임에서 자주 보였던 문구인",
     "'Press any button to Start'를 비틀어서 만든겁니다.",
-    "",
-    "맨 처음에는 클리커류 게임을 만들어볼까 했었는데,",
+    "", "맨 처음에는 클리커류 게임을 만들어볼까 했었는데,",
     "좀 더 액티브하게 상호작용을 하는 통통튀는 게임을 만들게 되었네요. :)",
-    "",
-    "그리고 중력이란 시스템을 넣는데 뭔가 레벨에 따라 중력이 다르게 설정을 하면서",
+    "", "그리고 중력이란 시스템을 넣는데 뭔가 레벨에 따라 중력이 다르게 설정을 하면서",
     "배경을 달로 해야겠다는 아이디어를 떠올렸습니다.",
-    "",
-    "저는 항상 우주와 묵직한 클래식들이 잘어울린다고 생각해왔는데,",
+    "", "저는 항상 우주와 묵직한 클래식들이 잘어울린다고 생각해왔는데,",
     "고전게임하면 8비트 음악이라고 생각을 해서 8비트 클래식을 채용했습니다.",
-    "",
-    "특히 엔딩은 월광소나타로 장식하여 달과 엮어서 마무리하는게 좋을것 같았습니다.",
-    "",
-    "여기까지 개발자의 지루한 감상문이었습니다. 감사합니다.",
-    "",
-    "다음에는 진정한 클래식인 플랫포머를 비틀어서 만들어보고 싶네요."
+    "", "특히 엔딩은 월광소나타로 장식하여 달과 엮어서 마무리하는게 좋을것 같았습니다.",
+    "", "여기까지 개발자의 지루한 감상문이었습니다. 감사합니다.",
+    "", "다음에는 진정한 클래식인 플랫포머를 비틀어서 만들어보고 싶네요."
 ];
 
 const _sB = new Audio('띠용.mp3'), _sD = new Audio('꺼지는소리.mp3'), _sC = new Audio('단체환호.mp3');
 const _mB = 0.6;
 const _b1 = new Audio('Air 8-bit.mp3'), _b2 = new Audio('Symphony no. 25 8-bit.mp3'), _b3 = new Audio('Winter, The Four Seasons 8-bit.mp3'), _b4 = new Audio('Moonlight Sonata 8-bit.mp3');
-[_b1, _b2, _b3, _b4].forEach(a => a.loop = true); _b1.volume = 0.1; _b2.volume = 0.3; _b3.volume = 0.3; _b4.volume = 0.25; _sC.volume = 0.5;
+[_b1, _b2, _b3, _b4].forEach(a => a.loop = true); 
+
+/* MEMO: Sound Volume Settings - Death sound set to 0.15 */
+_b1.volume = 0.1; _b2.volume = 0.3; _b3.volume = 0.3; _b4.volume = 0.25; 
+_sC.volume = 0.5; _sD.volume = 0.15; 
+
 const _iA = new Image(); _iA.src = 'Aview.png';
 
 let _gs = false, _dc = parseInt(localStorage.getItem('deathCount')) || 0, _tc = parseInt(localStorage.getItem('totalClears')) || 0, _hc = localStorage.getItem('hasCleared') === 'true';
 let _cs = 1, _tr = false, _pe = false, _f = 0, _ie = false, _sc = false, _he = false, _hy = 0, _id = false, _dt = 0, _ps = [], _md = false, _ds = 1, _s8 = { t: false, b: false };
+
+/* MEMO: Delta Time Variables for Frame Rate Independence */
+let _lT = performance.now();
+const _tFp = 1000 / 60; // Target 60 FPS
 
 function _uB() {
     if (_tr && _ie && _f >= 1) return;
@@ -161,19 +161,22 @@ function _dTB() {
     _x.setLineDash([]);
 }
 
-/* MEMO: Hidden Ending Credits. Text scroll logic with 30% smaller font (_vh(2.8)). */
-function _dHE() {
-    if (!_he) return; _x.fillStyle = 'black'; _x.fillRect(0, 0, _c.width, _c.height);
-    _x.textAlign = 'center'; _x.fillStyle = 'white'; _x.font = `${_vh(2.8)}px 'Courier New'`;
+/* MEMO: Hidden Ending. Scroll speed multiplied by dt for constant speed. */
+function _dHE(dt) {
+    if (!_he) return; 
+    if (document.body.style.backgroundImage.indexOf('Hidden_back.gif') === -1) {
+        document.body.style.backgroundImage = "url('Hidden_back.gif')";
+    }
+    _x.clearRect(0, 0, _c.width, _c.height);
+    _x.fillStyle = 'rgba(0, 0, 0, 0.6)'; _x.fillRect(0, 0, _c.width, _c.height);
     
+    _x.textAlign = 'center'; _x.fillStyle = 'white'; _x.font = `${_vh(2.8)}px 'Courier New'`;
     const lineGap = _vh(4.5);
     _HM.forEach((line, i) => {
         let ty = (_c.height - _hy) + (i * lineGap);
-        if (ty > -_vh(5) && ty < _c.height + _vh(5)) {
-            _x.fillText(line, _c.width / 2, ty);
-        }
+        if (ty > -_vh(5) && ty < _c.height + _vh(5)) { _x.fillText(line, _c.width / 2, ty); }
     });
-    _hy += 1.0;
+    _hy += 1.0 * dt; // Corrected Scroll
 
     const lastLineY = (_c.height - _hy) + ((_HM.length - 1) * lineGap);
     if (lastLineY < -_vh(5)) { 
@@ -182,8 +185,8 @@ function _dHE() {
     }
 }
 
-function _dUI() {
-    if (_he) { _dHE(); return; }
+function _dUI(dt) {
+    if (_he) { _dHE(dt); return; }
     if (_ie && _f < 1) {
         _x.textAlign = 'center'; _x.fillStyle = 'yellow'; _x.font = `bold ${_vh(6)}px 'Courier New'`; _x.fillText('Congratulations! you make it!', _c.width / 2, _vh(25));
         _x.fillStyle = 'white'; _x.font = `${_vh(5)}px 'Courier New'`; _x.fillText('Press Any Button to Start', _c.width / 2, _vh(50));
@@ -217,15 +220,26 @@ function _dUI() {
 }
 
 function _gL() {
+    /* MEMO: Physics calculations adjusted by dt to maintain 60FPS speed regardless of refresh rate. */
+    const nT = performance.now();
+    const dt = (nT - _lT) / _tFp;
+    _lT = nT;
+
     _x.clearRect(0, 0, _c.width, _c.height); _dTB(); _dOB();
     if (!_id && _gs && !_tr && !_pe && !_ie && !_sc && !_he) {
-        _bt.vy += _bt.g; _bt.x += _bt.vx; _bt.y += _bt.vy; _bt.a += _bt.va; _bt.va *= 0.98;
+        _bt.vy += _bt.g * dt; 
+        _bt.x += _bt.vx * dt; 
+        _bt.y += _bt.vy * dt; 
+        _bt.a += _bt.va * dt; _bt.va *= Math.pow(0.98, dt);
         if (_bt.x + _bt.w < 0) _bt.x += _c.width; else if (_bt.x > _c.width) _bt.x -= _c.width;
         if (_bt.y > _c.height) _tD(); _cSC();
     }
-    _ps.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.l -= 0.02; _x.fillStyle = `rgba(255, 255, 255, ${p.l})`; _x.fillRect(p.x, p.y, p.s, p.s); if (p.l <= 0) _ps.splice(i, 1); });
-    if (_dt > 0) _dt--; _bt.d(); _dUI();
-    if (_f > 0 && !_he) { _x.fillStyle = `rgba(0, 0, 0, ${_f})`; _x.fillRect(0, 0, _c.width, _c.height); if(_ie || _sc || _tr) _dUI(); }
+    _ps.forEach((p, i) => { p.x += p.vx * dt; p.y += p.vy * dt; p.l -= 0.02 * dt; _x.fillStyle = `rgba(255, 255, 255, ${p.l})`; _x.fillRect(p.x, p.y, p.s, p.s); if (p.l <= 0) _ps.splice(i, 1); });
+    if (_dt > 0) _dt -= 1 * dt; _bt.d(); _dUI(dt);
+    if (_f > 0 && !_he) { 
+        _x.fillStyle = `rgba(0, 0, 0, ${_f})`; _x.fillRect(0, 0, _c.width, _c.height); 
+        if(_ie || _sc || _tr) _dUI(dt); 
+    }
     requestAnimationFrame(_gL);
 }
 
@@ -236,7 +250,12 @@ function _hI(e) {
     let cx, cy; const r = _c.getBoundingClientRect();
     if (e.type.startsWith('touch')) { const t = e.touches[0] || e.changedTouches[0]; cx = t.clientX - r.left; cy = t.clientY - r.top; } else { cx = e.clientX - r.left; cy = e.clientY - r.top; }
 
-    if (_he) { if (e.type === 'mousedown' || e.type === 'keydown' || e.type === 'touchstart') { _he = false; _sc = false; _cs = 1; _gs = false; document.body.style.backgroundImage = "url('space_back1.gif')"; _sa(); _uB(); _bt.r(); } return; }
+    if (_he) { if (e.type === 'mousedown' || e.type === 'keydown' || e.type === 'touchstart') { 
+        _he = false; _sc = false; _cs = 1; _gs = false; 
+        document.body.style.backgroundImage = "url('space_back1.gif')";
+        _sa(); _uB(); _bt.r(); 
+    } return; }
+    
     if (!_gs && !_id && !_ie && !_sc) {
         if (e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'keydown') {
             if (_hc && _cs === 1 && (e.type !== 'keydown')) { const bx = _c.width/2 - _bt.w/2, by = _bt.y + _vh(12); if (cx > bx && cx < bx + _bt.w && cy > by && cy < by + _bt.h) { _sc = true; document.body.style.backgroundImage = "url('space_back2.gif')"; _uB(); return; } }
